@@ -57,5 +57,18 @@ interface Api {
         @Query("api_key") apikey: String
     ) : Deferred<MovieActors>
 
+    // Get Actor Details
+    @GET("person/{personId}")
+    fun getActorDetails(
+        @Path("personId") id : Int,
+        @Query("api_key") apikey: String
+    ) : Deferred<ActorFullData>
+
+
+    @GET("person/{personId}/movie_credits")
+    fun getActorMovies(
+        @Path("personId") id : Int,
+        @Query("api_key") apikey: String
+    ):Deferred<ActorMovies>
 
 }

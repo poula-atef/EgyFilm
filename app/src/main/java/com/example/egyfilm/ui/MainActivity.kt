@@ -23,10 +23,26 @@ class MainActivity : AppCompatActivity() {
 //        getMovieRelatives(438631, 1, Constants.SIMILAR)
 //        getMovieRelatives(438631, 1, Constants.RECOMMENDATIONS)
 //        getMovieActors(438631)
+//        getActorDetails(933238)
+//        getActorMovies(933238)
 
     }
 
-    private fun getMovieActors(id : Int) {
+    private fun getActorMovies(id: Int) {
+        viewModel.getActorMovies(id)
+        viewModel.actorMoviesLiveData.observe(this, Observer {
+            Log.d("MainActivity", it.toString())
+        })
+    }
+
+    private fun getActorDetails(id: Int) {
+        viewModel.getActorDetails(id)
+        viewModel.actorLiveData.observe(this, Observer {
+            Log.d("MainActivity", it.toString())
+        })
+    }
+
+    private fun getMovieActors(id: Int) {
         viewModel.getMovieActors(id)
         viewModel.movieActorsLiveData.observe(this, Observer {
             Log.d("MainActivity", it.toString())
@@ -47,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         relationship: String,
         liveData: LiveData<MovieRelative>
     ) {
-        viewModel.getMovieRelatives(id, page,relationship)
+        viewModel.getMovieRelatives(id, page, relationship)
         liveData.observe(this, Observer {
             Log.d("MainActivity", it.toString())
         })

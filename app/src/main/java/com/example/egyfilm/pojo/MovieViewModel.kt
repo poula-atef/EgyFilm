@@ -48,6 +48,15 @@ class MovieViewModel : ViewModel() {
         get() = _movieActorsLiveData
 
 
+    private val _actorLiveData = MutableLiveData<ActorFullData>()
+    val actorLiveData: LiveData<ActorFullData>
+        get() = _actorLiveData
+
+
+    private val _actorMoviesLiveData = MutableLiveData<ActorMovies>()
+    val actorMoviesLiveData: LiveData<ActorMovies>
+        get() = _actorMoviesLiveData
+
 
     private val genresList = listOf("top_rated", "popular", "upcoming")
     val genresMap = HashMap<String, Movies>()
@@ -58,28 +67,70 @@ class MovieViewModel : ViewModel() {
     private val movieApi = MovieRetrofitApi.getMovieRetrofitApiInstance()
 
 
-
-
-    fun getMovieActors(id : Int){
+    fun getActorMovies(id : Int){
         uiScope.launch {
-            _movieActorsLiveData.value = getMovieActorsSuspend(id)
+            _actorMoviesLiveData.value = getActorMoviesSuspend(id)
         }
     }
 
-    private suspend fun getMovieActorsSuspend(id: Int): MovieActors? {
+    private suspend fun getActorMoviesSuspend(id: Int): ActorMovies? {
         return withContext(Dispatchers.IO){
-            val response = movieApi.getMovieActors(id,Constants.API_KEY)
-            var result : MovieActors? = null
-            try{
+            val response = movieApi.getActorMovies(id,Constants.API_KEY)
+            var result : ActorMovies? = null
+            try {
                 result = response.await()
             }
-            catch(t : Throwable){
+            catch (t : Throwable){
             }
             result
         }
     }
 
 
+    //region Get Actor Full Details
+
+    fun getActorDetails(id: Int) {
+        uiScope.launch {
+            _actorLiveData.value = getActorDetailsSuspend(id)
+        }
+    }
+
+    private suspend fun getActorDetailsSuspend(id: Int): ActorFullData? {
+        return withContext(Dispatchers.IO){
+            val response = movieApi.getActorDetails(id,Constants.API_KEY)
+            var result : ActorFullData? = null
+            try {
+                result = response.await()
+            }
+            catch (t : Throwable){
+            }
+            result
+        }
+    }
+
+    //endregion
+
+    //region Get Actors Of A Movie
+
+    fun getMovieActors(id: Int) {
+        uiScope.launch {
+            _movieActorsLiveData.value = getMovieActorsSuspend(id)
+        }
+    }
+
+    private suspend fun getMovieActorsSuspend(id: Int): MovieActors? {
+        return withContext(Dispatchers.IO) {
+            val response = movieApi.getMovieActors(id, Constants.API_KEY)
+            var result: MovieActors? = null
+            try {
+                result = response.await()
+            } catch (t: Throwable) {
+            }
+            result
+        }
+    }
+
+    //endregion
 
     //region Get Similar & Recommendation Movies For A Movie
 

@@ -1,9 +1,6 @@
 package com.example.egyfilm.pojo.retrofit
 
-import com.example.egyfilm.pojo.classes.Genres
-import com.example.egyfilm.pojo.classes.MovieFullData
-import com.example.egyfilm.pojo.classes.MovieRelatives
-import com.example.egyfilm.pojo.classes.Movies
+import com.example.egyfilm.pojo.classes.*
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -51,6 +48,14 @@ interface Api {
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
         @Query("page") page: Int
-    ) : Deferred<MovieRelatives>
+    ) : Deferred<MovieRelative>
+
+    // Get Actors For Movie
+    @GET("movie/{movieId}/credits")
+    fun getMovieActors(
+        @Path("movieId") id : Int,
+        @Query("api_key") apikey: String
+    ) : Deferred<MovieActors>
+
 
 }

@@ -33,14 +33,20 @@ class MovieViewModel : ViewModel() {
         get() = _selectedMovieLiveData
 
 
-    private val _movieSimilarsLiveData = MutableLiveData<MovieRelatives>()
-    val movieSimilarsLiveData: LiveData<MovieRelatives>
+    private val _movieSimilarsLiveData = MutableLiveData<MovieRelative>()
+    val movieSimilarsLiveData: LiveData<MovieRelative>
         get() = _movieSimilarsLiveData
 
 
-    private val _movieRecommendationsLiveData = MutableLiveData<MovieRelatives>()
-    val movieRecommendationsLiveData: LiveData<MovieRelatives>
+    private val _movieRecommendationsLiveData = MutableLiveData<MovieRelative>()
+    val movieRecommendationsLiveData: LiveData<MovieRelative>
         get() = _movieRecommendationsLiveData
+
+
+    private val _movieActorsLiveData = MutableLiveData<MovieActors>()
+    val movieActorsLiveData: LiveData<MovieActors>
+        get() = _movieActorsLiveData
+
 
 
     private val genresList = listOf("top_rated", "popular", "upcoming")
@@ -51,6 +57,31 @@ class MovieViewModel : ViewModel() {
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
     private val movieApi = MovieRetrofitApi.getMovieRetrofitApiInstance()
 
+
+
+
+    fun getMovieActors(id : Int){
+        uiScope.launch {
+            _movieActorsLiveData.value = getMovieActorsSuspend(id)
+        }
+    }
+
+    private suspend fun getMovieActorsSuspend(id: Int): MovieActors? {
+        return withContext(Dispatchers.IO){
+            val response = movieApi.getMovieActors(id,Constants.API_KEY)
+            var result : MovieActors? = null
+            try{
+                result = response.await()
+            }
+            catch(t : Throwable){
+            }
+            result
+        }
+    }
+
+
+
+    //region Get Similar & Recommendation Movies For A Movie
 
     fun getMovieRelatives(id: Int, page: Int, relationship: String) {
         uiScope.launch {
@@ -66,7 +97,7 @@ class MovieViewModel : ViewModel() {
         id: Int,
         page: Int,
         relationship: String
-    ): MovieRelatives? {
+    ): MovieRelative? {
         return withContext(Dispatchers.IO) {
             val response = movieApi.getMovieSimilars(
                 id,
@@ -75,7 +106,7 @@ class MovieViewModel : ViewModel() {
                 Locale.getDefault().language,
                 page
             )
-            var result: MovieRelatives? = null
+            var result: MovieRelative? = null
             try {
                 result = response.await()
             } catch (t: Throwable) {
@@ -84,6 +115,7 @@ class MovieViewModel : ViewModel() {
         }
     }
 
+    //endregion
 
     //region Get Movie Full Details
 

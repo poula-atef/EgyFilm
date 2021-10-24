@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.egyfilm.R
 import com.example.egyfilm.pojo.Constants
 import com.example.egyfilm.pojo.MovieViewModel
-import com.example.egyfilm.pojo.classes.MovieRelatives
+import com.example.egyfilm.pojo.classes.MovieRelative
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MovieViewModel
@@ -22,7 +22,15 @@ class MainActivity : AppCompatActivity() {
 //        getMovieFullData(438631)
 //        getMovieRelatives(438631, 1, Constants.SIMILAR)
 //        getMovieRelatives(438631, 1, Constants.RECOMMENDATIONS)
+//        getMovieActors(438631)
 
+    }
+
+    private fun getMovieActors(id : Int) {
+        viewModel.getMovieActors(id)
+        viewModel.movieActorsLiveData.observe(this, Observer {
+            Log.d("MainActivity", it.toString())
+        })
     }
 
 
@@ -37,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         id: Int,
         page: Int,
         relationship: String,
-        liveData: LiveData<MovieRelatives>
+        liveData: LiveData<MovieRelative>
     ) {
         viewModel.getMovieRelatives(id, page,relationship)
         liveData.observe(this, Observer {

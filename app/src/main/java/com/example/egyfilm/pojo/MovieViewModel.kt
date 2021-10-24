@@ -33,9 +33,14 @@ class MovieViewModel : ViewModel() {
         get() = _selectedMovieLiveData
 
 
-    private val _movieSimilarLiveData = MutableLiveData<MovieRelatives>()
-    val movieSimilarLiveData: LiveData<MovieRelatives>
-        get() = _movieSimilarLiveData
+    private val _movieSimilarsLiveData = MutableLiveData<MovieRelatives>()
+    val movieSimilarsLiveData: LiveData<MovieRelatives>
+        get() = _movieSimilarsLiveData
+
+
+    private val _movieRecommendationsLiveData = MutableLiveData<MovieRelatives>()
+    val movieRecommendationsLiveData: LiveData<MovieRelatives>
+        get() = _movieRecommendationsLiveData
 
 
     private val genresList = listOf("top_rated", "popular", "upcoming")
@@ -47,16 +52,25 @@ class MovieViewModel : ViewModel() {
     private val movieApi = MovieRetrofitApi.getMovieRetrofitApiInstance()
 
 
-    fun getMovieSimilars(id: Int, page: Int) {
+    fun getMovieRelatives(id: Int, page: Int, relationship: String) {
         uiScope.launch {
-            _movieSimilarLiveData.value = getMovieSimilarsSuspend(id, page)
+            if (relationship.equals(Constants.RECOMMENDATIONS))
+                _movieRecommendationsLiveData.value =
+                    getMovieRelativesSuspend(id, page, relationship)
+            else
+                _movieSimilarsLiveData.value = getMovieRelativesSuspend(id, page, relationship)
         }
     }
 
-    private suspend fun getMovieSimilarsSuspend(id: Int, page: Int): MovieRelatives? {
+    private suspend fun getMovieRelativesSuspend(
+        id: Int,
+        page: Int,
+        relationship: String
+    ): MovieRelatives? {
         return withContext(Dispatchers.IO) {
             val response = movieApi.getMovieSimilars(
                 id,
+                relationship,
                 Constants.API_KEY,
                 Locale.getDefault().language,
                 page

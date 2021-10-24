@@ -44,9 +44,10 @@ interface Api {
     ): Deferred<MovieFullData>
 
     // Get Similar Movies List For A Movie
-    @GET("movie/{movieId}/similar")
+    @GET("movie/{movieId}/{relationship}")
     fun getMovieSimilars(
         @Path("movieId") id: Int,
+        @Path("relationship") relationship : String,
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
         @Query("page") page: Int

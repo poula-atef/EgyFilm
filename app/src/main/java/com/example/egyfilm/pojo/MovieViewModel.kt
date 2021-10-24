@@ -39,7 +39,7 @@ class MovieViewModel : ViewModel() {
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
     private val movieApi = MovieRetrofitApi.getMovieRetrofitApiInstance()
 
-    
+
     //region Get Special Genre Movies
 
     fun getSpecialGenreMovies(page: Int) {

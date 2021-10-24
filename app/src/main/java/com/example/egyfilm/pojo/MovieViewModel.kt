@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.egyfilm.pojo.classes.Genre
-import com.example.egyfilm.pojo.classes.Genres
-import com.example.egyfilm.pojo.classes.MovieFullData
-import com.example.egyfilm.pojo.classes.Movies
+import com.example.egyfilm.pojo.classes.*
 import com.example.egyfilm.pojo.retrofit.MovieRetrofitApi
 import kotlinx.coroutines.*
 import java.util.*
@@ -36,6 +33,11 @@ class MovieViewModel : ViewModel() {
         get() = _selectedMovieLiveData
 
 
+    private val _movieSimilarLiveData = MutableLiveData<MovieRelatives>()
+    val movieSimilarLiveData: LiveData<MovieRelatives>
+        get() = _movieSimilarLiveData
+
+
     private val genresList = listOf("top_rated", "popular", "upcoming")
     val genresMap = HashMap<String, Movies>()
     private var count = 0
@@ -44,6 +46,29 @@ class MovieViewModel : ViewModel() {
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
     private val movieApi = MovieRetrofitApi.getMovieRetrofitApiInstance()
 
+
+    fun getMovieSimilars(id: Int, page: Int) {
+        uiScope.launch {
+            _movieSimilarLiveData.value = getMovieSimilarsSuspend(id, page)
+        }
+    }
+
+    private suspend fun getMovieSimilarsSuspend(id: Int, page: Int): MovieRelatives? {
+        return withContext(Dispatchers.IO) {
+            val response = movieApi.getMovieSimilars(
+                id,
+                Constants.API_KEY,
+                Locale.getDefault().language,
+                page
+            )
+            var result: MovieRelatives? = null
+            try {
+                result = response.await()
+            } catch (t: Throwable) {
+            }
+            result
+        }
+    }
 
 
     //region Get Movie Full Details
@@ -58,11 +83,10 @@ class MovieViewModel : ViewModel() {
         return withContext(Dispatchers.IO) {
             val response =
                 movieApi.getMovieFullDetails(id, Constants.API_KEY, Locale.getDefault().language)
-            var result : MovieFullData? = null
-            try{
+            var result: MovieFullData? = null
+            try {
                 result = response.await()
-            }
-            catch(t : Throwable){
+            } catch (t: Throwable) {
             }
             result
         }

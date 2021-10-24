@@ -9,7 +9,7 @@ import com.example.egyfilm.R
 import com.example.egyfilm.pojo.MovieViewModel
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewModel : MovieViewModel
+    private lateinit var viewModel: MovieViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -17,10 +17,18 @@ class MainActivity : AppCompatActivity() {
 
 //        getAllFrontMovies()
 //        getMovieFullData(438631)
+//        getMovieSimilars(438631, 1)
 
     }
 
-    private fun getMovieFullData(id : Int) {
+    private fun getMovieSimilars(id: Int, page: Int) {
+        viewModel.getMovieSimilars(id, page)
+        viewModel.movieSimilarLiveData.observe(this, Observer {
+            Log.d("MainActivity", it.toString())
+        })
+    }
+
+    private fun getMovieFullData(id: Int) {
         viewModel.getMovieFullDetail(id)
         viewModel.selectedMovieLiveData.observe(this, Observer {
             Log.d("MainActivity", it.toString())

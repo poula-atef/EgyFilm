@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.egyfilm.pojo.classes.Genre
 import com.example.egyfilm.pojo.classes.Genres
+import com.example.egyfilm.pojo.classes.MovieFullData
 import com.example.egyfilm.pojo.classes.Movies
 import com.example.egyfilm.pojo.retrofit.MovieRetrofitApi
 import kotlinx.coroutines.*
@@ -13,7 +14,6 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class MovieViewModel : ViewModel() {
-
 
 
     private val _genresLiveData = MutableLiveData<Genres>()
@@ -31,6 +31,11 @@ class MovieViewModel : ViewModel() {
         get() = _genresDataCompleted
 
 
+    private val _selectedMovieLiveData = MutableLiveData<MovieFullData>()
+    val selectedMovieLiveData: LiveData<MovieFullData>
+        get() = _selectedMovieLiveData
+
+
     private val genresList = listOf("top_rated", "popular", "upcoming")
     val genresMap = HashMap<String, Movies>()
     private var count = 0
@@ -39,6 +44,31 @@ class MovieViewModel : ViewModel() {
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
     private val movieApi = MovieRetrofitApi.getMovieRetrofitApiInstance()
 
+
+
+    //region Get Movie Full Details
+
+    fun getMovieFullDetail(id: Int) {
+        uiScope.launch {
+            _selectedMovieLiveData.value = getMovieFullDetailSuspend(id)
+        }
+    }
+
+    private suspend fun getMovieFullDetailSuspend(id: Int): MovieFullData? {
+        return withContext(Dispatchers.IO) {
+            val response =
+                movieApi.getMovieFullDetails(id, Constants.API_KEY, Locale.getDefault().language)
+            var result : MovieFullData? = null
+            try{
+                result = response.await()
+            }
+            catch(t : Throwable){
+            }
+            result
+        }
+    }
+
+    //endregion
 
     //region Get Special Genre Movies
 

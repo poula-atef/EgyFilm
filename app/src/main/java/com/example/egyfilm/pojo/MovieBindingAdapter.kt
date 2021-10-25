@@ -49,7 +49,8 @@ fun RecyclerView.setMoviesRecyclerViewAdapterItems(movies: HashMap<String, Movie
 
 @BindingAdapter(value=["itemsMap","itemType"],requireAll = false)
 fun RecyclerView.itemsMap(movies: Movies?, itemType : Int?){
-    adapter = MoviesAdapter()
+    if(adapter == null)
+        adapter = MoviesAdapter()
     (adapter as MoviesAdapter).type = itemType
     (adapter as MoviesAdapter).submitList(movies?.results)
 }

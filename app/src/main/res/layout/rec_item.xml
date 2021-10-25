@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="itemType"
+            type="Integer" />
+
+        <variable
+            name="movieIndex"
+            type="String" />
+
+        <variable
+            name="movieItems"
+            type="com.example.egyfilm.pojo.classes.Movies" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/genre_title"
+            setRecyclerViewTitle="@{movieIndex}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:fontFamily="@font/allerta_stencil"
+            android:text="upcoming movies"
+            android:textColor="@color/text_color_2"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/see_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:fontFamily="@font/allerta_stencil"
+            android:text="@string/see_more"
+            android:textColor="@color/text_color_2"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/genre_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/genre_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec"
+            itemsMap="@{movieItems}"
+            itemType="@{itemType}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/genre_title"
+            tools:itemCount="15"
+            tools:listitem="@layout/small_movie_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.egyfilm.databinding.FragmentHomeBinding
 import com.example.egyfilm.pojo.MovieViewModel
 import com.example.egyfilm.pojo.MoviesAdapter
+import com.example.egyfilm.pojo.RecAdapter
 
 
 class HomeFragment : Fragment() {
@@ -25,7 +26,7 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        binding.rec.adapter = MoviesAdapter(2)
+        binding.rec.adapter = RecAdapter()
         getAllFrontMovies()
         return binding.root
     }

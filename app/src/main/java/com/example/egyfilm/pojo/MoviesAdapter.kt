@@ -9,8 +9,10 @@ import com.example.egyfilm.databinding.LargeMovieItemBinding
 import com.example.egyfilm.databinding.SmallMovieItemBinding
 import com.example.egyfilm.pojo.classes.Movie
 
-class MoviesAdapter(private val type: Int) :
+class MoviesAdapter :
     ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallBack) {
+
+    var type: Int? = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (type == 1)
@@ -19,7 +21,10 @@ class MoviesAdapter(private val type: Int) :
     }
 
     override fun onBindViewHolder(holderSmall: RecyclerView.ViewHolder, position: Int) {
-        (holderSmall as LargeMovieViewHolder).bindMovieItem(getItem(position))
+        if(type == 1)
+            (holderSmall as LargeMovieViewHolder).bindMovieItem(getItem(position))
+        else
+            (holderSmall as SmallMovieViewHolder).bindMovieItem(getItem(position))
     }
 
     class SmallMovieViewHolder private constructor(private val binding: SmallMovieItemBinding) :

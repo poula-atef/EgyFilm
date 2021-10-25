@@ -3,9 +3,12 @@ package com.example.egyfilm.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.egyfilm.R
 import com.example.egyfilm.pojo.Constants
 import com.example.egyfilm.pojo.MovieViewModel
@@ -13,10 +16,12 @@ import com.example.egyfilm.pojo.classes.MovieRelative
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MovieViewModel
+
+    //    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
+//        viewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
 
 //        getAllFrontMovies()
 //        getMovieFullData(438631)
@@ -72,9 +77,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun getMovieFullData(id: Int) {
         viewModel.getMovieFullDetail(id)
-        viewModel.selectedMovieLiveData.observe(this, Observer {
+//        binding.viewModel = viewModel
+//        binding.lifecycleOwner = this
+/*        viewModel.selectedMovieLiveData.observe(this, Observer {
             Log.d("MainActivity", it.toString())
-        })
+            bining.movieDetails = it
+            binding.rating.text = "IMDB ${it.voteAverage}"
+        })*/
     }
 
     private fun getAllFrontMovies() {
@@ -88,10 +97,10 @@ class MainActivity : AppCompatActivity() {
             viewModel.getSpecialGenreMovies(1)
         })
 
-        viewModel.genresDataCompleted.observe(this, Observer {
+/*        viewModel.genresDataCompleted.observe(this, Observer {
             for (movies in viewModel.genresMap)
                 Log.d("ViewModel", "${movies.key} -----> ${movies.value.results.toString()}")
-        })
+        })*/
 
     }
 }

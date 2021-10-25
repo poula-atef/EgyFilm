@@ -23,8 +23,8 @@ class MovieViewModel : ViewModel() {
         get() = _genreMoviesLiveData
 
 
-    private val _genresDataCompleted = MutableLiveData<Boolean>()
-    val genresDataCompleted: LiveData<Boolean>
+    private val _genresDataCompleted = MutableLiveData<HashMap<String,Movies>>()
+    val genresDataCompleted: LiveData<HashMap<String,Movies>>
         get() = _genresDataCompleted
 
 
@@ -59,7 +59,7 @@ class MovieViewModel : ViewModel() {
 
 
     private val genresList = listOf("top_rated", "popular", "upcoming")
-    val genresMap = HashMap<String, Movies>()
+    private val genresMap = HashMap<String, Movies>()
     private var count = 0
     private val specialGenresSize = genresList.size
     private val job = Job()
@@ -228,7 +228,7 @@ class MovieViewModel : ViewModel() {
 
     private suspend fun doneGettingGenresData() {
         withContext(Dispatchers.Main) {
-            _genresDataCompleted.value = true
+            _genresDataCompleted.value = genresMap
         }
     }
 

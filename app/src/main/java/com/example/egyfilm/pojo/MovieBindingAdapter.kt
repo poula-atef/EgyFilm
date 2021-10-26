@@ -1,5 +1,9 @@
 package com.example.egyfilm.pojo
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.util.Log
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -47,22 +51,31 @@ fun RecyclerView.setMoviesRecyclerViewAdapterItems(movies: HashMap<String, Movie
     (adapter as MoviesAdapter).submitList(movies?.get("upcoming")?.results)
 }
 
-@BindingAdapter(value=["itemsMap","itemType"],requireAll = false)
-fun RecyclerView.itemsMap(movies: Movies?, itemType : Int?){
-    if(adapter == null)
-        adapter = MoviesAdapter()
+@BindingAdapter(value = ["itemsMap", "itemType"], requireAll = false)
+fun RecyclerView.itemsMap(movies: Movies?, itemType: Int?) {
+    adapter = MoviesAdapter()
     (adapter as MoviesAdapter).type = itemType
     (adapter as MoviesAdapter).submitList(movies?.results)
 }
 
 @BindingAdapter("setRecyclerViewTitle")
-fun TextView.setRecyclerViewTitle(recName : String?){
+fun TextView.setRecyclerViewTitle(recName: String?) {
     text = recName
 }
 
 
 @BindingAdapter("setMainRecyclerViewItems")
-fun RecyclerView.setMainRecyclerViewItems(items : HashMap<String,Movies>?){
-    val lst  = items?.toList()
+fun RecyclerView.setMainRecyclerViewItems(items: HashMap<String, Movies>?) {
+    val lst = items?.toList()
     (adapter as RecAdapter).submitList(lst)
+}
+
+
+@BindingAdapter("setMovieRatingColor")
+fun FrameLayout.setMovieRatingColor(movie: Movie?) {
+     backgroundTintList = when {
+        movie?.voteAverage!! >= 7.5 -> ColorStateList.valueOf(Color.GREEN)
+        movie.voteAverage >= 5 -> ColorStateList.valueOf(Color.YELLOW)
+        else -> ColorStateList.valueOf(Color.RED)
+    }
 }

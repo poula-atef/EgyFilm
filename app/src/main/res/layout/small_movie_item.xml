@@ -19,14 +19,13 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/_12sdp"
-            app:layout_constraintWidth_percent="0.82"
             app:cardCornerRadius="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            >
+            app:layout_constraintWidth_percent="0.855">
 
             <ImageView
                 android:id="@+id/img"
@@ -57,17 +56,18 @@
 
 
         <FrameLayout
+            setMovieRatingColor="@{movieItem}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/round_back"
-            android:backgroundTint="#0f0"
-            android:elevation="2dp"
             android:layout_marginEnd="@dimen/_2sdp"
+            android:background="@drawable/round_back"
+            android:elevation="2dp"
             android:foregroundTint="#0f0"
             app:layout_constraintBottom_toBottomOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/cardView"
-            app:layout_constraintVertical_bias="0.1">
+            app:layout_constraintVertical_bias="0.1"
+            tools:backgroundTint="#0f0">
 
             <TextView
                 android:id="@+id/rating"

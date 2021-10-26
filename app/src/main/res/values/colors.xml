@@ -10,4 +10,6 @@
     <color name="text_color_1">#FFFFFFFF</color>
     <color name="text_color_2">#000000</color>
     <color name="text_back_color_1">#555555</color>
+    <color name="App_back_color">#111</color>
+    <color name="app_secondary_color">#BA8C63</color>
 </resources>

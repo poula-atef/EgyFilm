@@ -1,5 +1,6 @@
 package com.example.egyfilm.pojo
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -15,16 +16,19 @@ class MoviesAdapter :
     var type: Int? = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (type == 1)
-            return LargeMovieViewHolder.getMovieViewHolderInstance(parent)
-        return SmallMovieViewHolder.getMovieViewHolderInstance(parent)
+        return if (type == 1)
+            LargeMovieViewHolder.getMovieViewHolderInstance(parent)
+        else
+            SmallMovieViewHolder.getMovieViewHolderInstance(parent)
     }
 
+
     override fun onBindViewHolder(holderSmall: RecyclerView.ViewHolder, position: Int) {
-        if(type == 1)
+        if (type == 1)
             (holderSmall as LargeMovieViewHolder).bindMovieItem(getItem(position))
         else
             (holderSmall as SmallMovieViewHolder).bindMovieItem(getItem(position))
+
     }
 
     class SmallMovieViewHolder private constructor(private val binding: SmallMovieItemBinding) :

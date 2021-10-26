@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/PoulaAtef/AndroidStudioProjects/EgyFilm/app/src/main/res/drawable/ic_actor.xml" value="0.2203125" />
+        <entry key="..\:/Users/PoulaAtef/AndroidStudioProjects/EgyFilm/app/src/main/res/drawable/ic_setting.xml" value="0.2203125" />
+        <entry key="..\:/Users/PoulaAtef/AndroidStudioProjects/EgyFilm/app/src/main/res/drawable/ic_user.xml" value="0.2203125" />
         <entry key="..\:/Users/PoulaAtef/AndroidStudioProjects/EgyFilm/app/src/main/res/drawable/round_back.xml" value="0.2203125" />
         <entry key="..\:/Users/PoulaAtef/AndroidStudioProjects/EgyFilm/app/src/main/res/drawable/shadow.xml" value="0.2203125" />
         <entry key="..\:/Users/PoulaAtef/AndroidStudioProjects/EgyFilm/app/src/main/res/font/aclonica.xml" value="0.234375" />
@@ -12,7 +15,7 @@
         <entry key="..\:/Users/PoulaAtef/AndroidStudioProjects/EgyFilm/app/src/main/res/layout/large_movie_item.xml" value="0.25" />
         <entry key="..\:/Users/PoulaAtef/AndroidStudioProjects/EgyFilm/app/src/main/res/layout/movie_item.xml" value="0.22" />
         <entry key="..\:/Users/PoulaAtef/AndroidStudioProjects/EgyFilm/app/src/main/res/layout/rec_item.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/PoulaAtef/AndroidStudioProjects/EgyFilm/app/src/main/res/layout/small_movie_item.xml" value="0.25" />
+        <entry key="..\:/Users/PoulaAtef/AndroidStudioProjects/EgyFilm/app/src/main/res/layout/small_movie_item.xml" value="0.67" />
       </map>
     </option>
   </component>

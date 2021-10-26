@@ -25,7 +25,6 @@ class RecAdapter : ListAdapter<Pair<String, Movies>, RecAdapter.RecViewHolder>(R
                 binding.itemType = 1
             else
                 binding.itemType = 2
-            Log.d("TAG", "item name is ${movieItem.first}")
             binding.movieIndex = movieItem.first
             binding.movieItems = movieItem.second
             binding.executePendingBindings()

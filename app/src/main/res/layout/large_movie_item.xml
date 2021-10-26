@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="movieItem"
             type="com.example.egyfilm.pojo.classes.Movie" />
@@ -18,23 +19,21 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/_15sdp"
-            app:layout_constraintWidth_percent="0.8"
             app:cardCornerRadius="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            >
+            app:layout_constraintWidth_percent="0.8">
 
             <ImageView
                 android:id="@+id/img"
-                tools:src="@drawable/dune"
                 setMovieImageFromTMDBForSmallItem="@{movieItem}"
-                android:scaleType="centerCrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                android:scaleType="centerCrop"
+                tools:src="@drawable/dune" />
 
             <View
                 android:layout_width="match_parent"
@@ -43,45 +42,47 @@
                 android:background="@drawable/shadow" />
 
             <TextView
+                setMovieTitleFromTMDBForSmallItem="@{movieItem}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                tools:text="Dune"
-                setMovieTitleFromTMDBForSmallItem="@{movieItem}"
                 android:layout_marginBottom="@dimen/_15sdp"
                 android:fontFamily="@font/allerta_stencil"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_20sdp" />
+                android:textSize="@dimen/_20sdp"
+                tools:text="Dune" />
         </androidx.cardview.widget.CardView>
 
 
         <FrameLayout
+            setMovieRatingColor="@{movieItem}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_2sdp"
             android:background="@drawable/round_back"
             android:backgroundTint="#0f0"
             android:elevation="5dp"
-            android:foregroundTint="#0f0"
             app:layout_constraintBottom_toBottomOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/cardView"
             app:layout_constraintVertical_bias="0.1"
-            app:layout_goneMarginEnd="@dimen/_5sdp">
+            app:layout_goneMarginEnd="@dimen/_5sdp"
+            tools:foregroundTint="#0f0"
+            >
 
             <TextView
                 android:id="@+id/rating"
+                setMovieRatingFromTMDBForLargeItem="@{movieItem}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_3sdp"
                 android:background="@drawable/round_back"
                 android:fontFamily="@font/allerta_stencil"
                 android:padding="@dimen/_4sdp"
-                tools:text="IMDB 7.5"
-                setMovieRatingFromTMDBForLargeItem="@{movieItem}"
                 android:textColor="@color/text_color_1"
-                android:textSize="@dimen/_14ssp" />
+                android:textSize="@dimen/_14ssp"
+                tools:text="IMDB 7.5" />
         </FrameLayout>
 
 

@@ -1,6 +1,10 @@
 package com.example.egyfilm.pojo.classes
 
-data class Genre(val id: Int, val name: String)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class Genres(val genres : List<Genre>)
+@Entity(tableName = "genre")
+data class Genre(@PrimaryKey val id: Int, val name: String)
+
+data class Genres(var genres: List<Genre>)
 

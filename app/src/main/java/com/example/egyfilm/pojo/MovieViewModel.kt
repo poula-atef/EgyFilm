@@ -1,5 +1,6 @@
 package com.example.egyfilm.pojo
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -262,25 +263,10 @@ class MovieViewModel : ViewModel() {
 
     //region Get All Genres
 
-    fun getGenres() {
+    fun getGenres(context : Context) {
         uiScope.launch {
-            _genresLiveData.value = getGenresSuspend() ?: return@launch
-        }
-    }
-
-    private suspend fun getGenresSuspend(): Genres? {
-        return withContext(Dispatchers.IO) {
-            val response = movieApi.getAllGenres(
-                Constants.API_KEY,
-                Locale.getDefault().language
-            )
-            var result: Genres? = null
-            try {
-                result = response.await()
-            } catch (t: Throwable) {
-                Log.d("ViewModel", t.message!!)
-            }
-            result
+            _genresLiveData.value = MovieRepository.getAllGenres(context) ?: return@launch
+            Log.d("Genres",_genresLiveData.value.toString())
         }
     }
 

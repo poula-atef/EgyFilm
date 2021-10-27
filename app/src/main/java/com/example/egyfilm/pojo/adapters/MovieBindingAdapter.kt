@@ -1,14 +1,14 @@
-package com.example.egyfilm.pojo
+package com.example.egyfilm.pojo.adapters
 
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.util.Log
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.egyfilm.pojo.Constants
 import com.example.egyfilm.pojo.classes.Movie
 import com.example.egyfilm.pojo.classes.MovieFullData
 import com.example.egyfilm.pojo.classes.Movies

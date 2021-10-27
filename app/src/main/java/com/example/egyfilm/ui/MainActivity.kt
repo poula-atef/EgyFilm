@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getAllFrontMovies() {
 
-        viewModel.getGenres()
+        viewModel.getGenres(this)
 
         viewModel.genresLiveData.observe(this, Observer {
             for (genre in it.genres) {

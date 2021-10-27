@@ -10,8 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.egyfilm.databinding.FragmentHomeBinding
 import com.example.egyfilm.pojo.MovieViewModel
-import com.example.egyfilm.pojo.MoviesAdapter
-import com.example.egyfilm.pojo.RecAdapter
+import com.example.egyfilm.pojo.adapters.MoviesAdapter
+import com.example.egyfilm.pojo.adapters.RecAdapter
 
 
 class HomeFragment : Fragment() {
@@ -33,7 +33,7 @@ class HomeFragment : Fragment() {
 
     private fun getAllFrontMovies() {
 
-        viewModel.getGenres()
+        viewModel.getGenres(requireContext())
 
         viewModel.genresLiveData.observe(this.viewLifecycleOwner, Observer {
             for (genre in it.genres) {
@@ -43,8 +43,8 @@ class HomeFragment : Fragment() {
         })
 
         viewModel.genresDataCompleted.observe(this.viewLifecycleOwner, Observer {
-/*            for (movies in viewModel.genresMap)
-                Log.d("ViewModel", "${movies.key} -----> ${movies.value.results.toString()}")*/
+            for (movies in it)
+                Log.d("ViewModel", "${movies.key} -----> ${movies.value.results.toString()}")
         })
 
     }

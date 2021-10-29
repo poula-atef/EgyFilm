@@ -17,10 +17,10 @@ interface MovieDao {
     fun getActor(id: Int): Actor
 
     @Query("select * from genre")
-    fun getGenres(): Deferred<List<Genre>>
+    fun getGenres(): List<Genre>
 
-    @Query("select * from movie where genreIds like '%' || :id || '%'")
-    fun getGenreMovies(id: Int) : List<Movie>
+    @Query("select * from movie where category = :category")
+    fun getGenreMovies(category: String) : List<Movie>
 
 
 

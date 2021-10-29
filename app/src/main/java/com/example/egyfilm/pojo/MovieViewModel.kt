@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.egyfilm.pojo.classes.*
 import com.example.egyfilm.pojo.retrofit.MovieRetrofitApi
@@ -24,8 +25,8 @@ class MovieViewModel : ViewModel() {
         get() = _genreMoviesLiveData
 
 
-    private val _genresDataCompleted = MutableLiveData<HashMap<String,Movies>>()
-    val genresDataCompleted: LiveData<HashMap<String,Movies>>
+    private val _genresDataCompleted = MutableLiveData<HashMap<String, Movies>>()
+    val genresDataCompleted: LiveData<HashMap<String, Movies>>
         get() = _genresDataCompleted
 
 
@@ -67,21 +68,23 @@ class MovieViewModel : ViewModel() {
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
     private val movieApi = MovieRetrofitApi.getMovieRetrofitApiInstance()
 
+    companion object {
+        var isConnected = true
+    }
 
-    fun getActorMovies(id : Int){
+    fun getActorMovies(id: Int) {
         uiScope.launch {
             _actorMoviesLiveData.value = getActorMoviesSuspend(id)
         }
     }
 
     private suspend fun getActorMoviesSuspend(id: Int): ActorMovies? {
-        return withContext(Dispatchers.IO){
-            val response = movieApi.getActorMovies(id,Constants.API_KEY)
-            var result : ActorMovies? = null
+        return withContext(Dispatchers.IO) {
+            val response = movieApi.getActorMovies(id, Constants.API_KEY)
+            var result: ActorMovies? = null
             try {
                 result = response.await()
-            }
-            catch (t : Throwable){
+            } catch (t: Throwable) {
             }
             result
         }
@@ -97,13 +100,12 @@ class MovieViewModel : ViewModel() {
     }
 
     private suspend fun getActorDetailsSuspend(id: Int): ActorFullData? {
-        return withContext(Dispatchers.IO){
-            val response = movieApi.getActorDetails(id,Constants.API_KEY)
-            var result : ActorFullData? = null
+        return withContext(Dispatchers.IO) {
+            val response = movieApi.getActorDetails(id, Constants.API_KEY)
+            var result: ActorFullData? = null
             try {
                 result = response.await()
-            }
-            catch (t : Throwable){
+            } catch (t: Throwable) {
             }
             result
         }
@@ -194,79 +196,49 @@ class MovieViewModel : ViewModel() {
 
     //region Get Special Genre Movies
 
-    fun getSpecialGenreMovies(page: Int) {
+    fun getSpecialGenreMovies(page: Int, context: Context) {
         uiScope.launch {
-
-            for (genre in genresList) {
-                genresMap[genre] = getSpecialGenreMoviesSuspend(genre, page) ?: return@launch
-                if (count == (specialGenresSize + _genresLiveData.value?.genres?.size!!))
-                    doneGettingGenresData()
-            }
-
-
-        }
-    }
-
-    private suspend fun getSpecialGenreMoviesSuspend(genre: String, page: Int): Movies? {
-        return withContext(Dispatchers.IO) {
-            val response = movieApi.getSpecialGenreMovies(
-                genre,
-                Constants.API_KEY,
-                Locale.getDefault().language,
-                page
+            MovieRepository.getSpecialGenreMovies(
+                page,
+                _genresLiveData.value?.genres?.size!!,
+                context
             )
-            var result: Movies? = null
-            try {
-                result = response.await()
-                count++
+            MovieRepository.genresDataCompleted.observeForever(Observer {
+                _genresDataCompleted.value = it
+            })
 
-            } catch (t: Throwable) {
-                Log.d("ViewModel", t.message!!)
-            }
-            result
+
         }
     }
 
-    private suspend fun doneGettingGenresData() {
-        withContext(Dispatchers.Main) {
-            _genresDataCompleted.value = genresMap
-        }
-    }
 
     //endregion
 
     //region Get Genre Movies
 
-    fun getGenreMovies(genre: Genre, page: Int) {
+    fun getGenreMovies(genre: Genre, page: Int, context: Context) {
         uiScope.launch {
-            genresMap[genre.name] = getGenreMoviesSuspend(genre.id, page) ?: return@launch
-            if (count == (specialGenresSize + _genresLiveData.value?.genres?.size!!))
-                doneGettingGenresData()
+            MovieRepository.getGenreMovies(
+                genre,
+                page,
+                genresLiveData.value?.genres?.size!!,
+                context
+            )
+            MovieRepository.genresDataCompleted.observeForever(Observer {
+                _genresDataCompleted.value = it
+            })
         }
     }
 
-    private suspend fun getGenreMoviesSuspend(genre: Int, page: Int): Movies? {
-        return withContext(Dispatchers.IO) {
-            val response = movieApi.getGenreMovies(Constants.API_KEY, genre, page)
-            var result: Movies? = null
-            try {
-                result = response.await()
-                count++
-            } catch (t: Throwable) {
-                Log.d("ViewModel", t.message!!)
-            }
-            result
-        }
-    }
 
     //endregion
 
     //region Get All Genres
 
-    fun getGenres(context : Context) {
+    fun getGenres(context: Context) {
         uiScope.launch {
             _genresLiveData.value = MovieRepository.getAllGenres(context) ?: return@launch
-            Log.d("Genres",_genresLiveData.value.toString())
+            Log.d("Genres", _genresLiveData.value.toString())
         }
     }
 

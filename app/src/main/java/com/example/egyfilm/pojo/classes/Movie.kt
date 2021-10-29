@@ -1,18 +1,19 @@
 package com.example.egyfilm.pojo.classes
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class Movies(val page: Int, var results: List<Movie>)
+data class Movies(val page: Int? = null, var results: List<Movie>? = null)
 
 @Entity(tableName = "movie")
 data class Movie(
     @Expose(serialize = false, deserialize = false) @PrimaryKey(autoGenerate = true) val dbId: Int,
-    @Expose(serialize = false, deserialize = false) val category : String,
-    @SerializedName("backdrop_path") val backdropPath: String,
-    @SerializedName("genre_ids") val genreIds: List<Int>,
+    @Expose(serialize = false, deserialize = false) var category : String,
+    @SerializedName("backdrop_path") val backdropPath: String?,
+    @SerializedName("genre_ids")  val genreIds: List<Int>,
     @SerializedName("original_language") val originalLanguage: String,
     @SerializedName("original_title") val originalTitle: String,
     @SerializedName("poster_path") val posterPath: String,
@@ -25,4 +26,5 @@ data class Movie(
     val popularity: Double,
     val title: String,
     val video: Boolean
-)
+) {
+}

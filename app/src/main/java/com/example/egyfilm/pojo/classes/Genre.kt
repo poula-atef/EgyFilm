@@ -6,5 +6,5 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "genre")
 data class Genre(@PrimaryKey val id: Int, val name: String)
 
-data class Genres(var genres: List<Genre>)
+data class Genres(var genres: List<Genre>? = null)
 

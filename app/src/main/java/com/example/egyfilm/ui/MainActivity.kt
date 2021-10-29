@@ -1,5 +1,8 @@
 package com.example.egyfilm.ui
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -91,10 +94,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.getGenres(this)
 
         viewModel.genresLiveData.observe(this, Observer {
-            for (genre in it.genres) {
-                viewModel.getGenreMovies(genre, 1)
+            for (genre in it.genres!!) {
+                viewModel.getGenreMovies(genre, 1,this)
             }
-            viewModel.getSpecialGenreMovies(1)
+            viewModel.getSpecialGenreMovies(1,this)
         })
 
 /*        viewModel.genresDataCompleted.observe(this, Observer {
@@ -103,4 +106,6 @@ class MainActivity : AppCompatActivity() {
         })*/
 
     }
+
+
 }

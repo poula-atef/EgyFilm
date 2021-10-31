@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="listener"
+            type="com.example.egyfilm.pojo.adapters.MoviesAdapter.OnMovieItemClickListener" />
+
+        <variable
             name="itemType"
             type="Integer" />
 
@@ -54,6 +58,7 @@
             android:id="@+id/rec"
             itemsMap="@{movieItems}"
             itemType="@{itemType}"
+            listener="@{listener}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

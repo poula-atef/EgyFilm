@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="listener"
+            type="com.example.egyfilm.pojo.adapters.MoviesAdapter.OnMovieItemClickListener" />
+
+        <variable
             name="movieItem"
             type="com.example.egyfilm.pojo.classes.Movie" />
     </data>

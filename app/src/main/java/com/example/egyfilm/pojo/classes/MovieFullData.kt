@@ -1,7 +1,13 @@
 package com.example.egyfilm.pojo.classes
 
+import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
+@Entity(tableName = "movie_full_data")
 data class MovieFullData(
     @SerializedName("backdrop_path") val backdropPath: String,
     @SerializedName("belongs_to_collection") val belongsToCollection: BelongsToCollection,
@@ -19,7 +25,7 @@ data class MovieFullData(
     val budget: Int,
     val genres: List<Genre>,
     val homepage: String,
-    val id: Int,
+    @PrimaryKey val id: Int,
     val overview: String,
     val popularity: Double,
     val revenue: Int,
@@ -29,29 +35,33 @@ data class MovieFullData(
     val title: String,
     val video: Boolean
 
-)
+) : Parcelable
 
+@Parcelize
 data class BelongsToCollection(
     val id: Int,
     val name: String,
     @SerializedName("poster_path") val posterPath: String,
     @SerializedName("backdrop_path") val backdropPath: String
-)
+) : Parcelable
 
+@Parcelize
 data class ProductionCompanies(
     @SerializedName("logo_path") val logoPath: String,
     @SerializedName("origin_country") val originCountry: String,
     val id: Int,
     val name: String
-)
+) : Parcelable
 
+@Parcelize
 data class ProductionCountries(
     @SerializedName("iso_3166_1") val iso31661: String,
     val name: String
-)
+) : Parcelable
 
+@Parcelize
 data class SpokenLanguages(
     @SerializedName("english_name") val englishName: String,
     @SerializedName("iso_639_1") val iso6391: String,
     val name: String
-)
+) : Parcelable

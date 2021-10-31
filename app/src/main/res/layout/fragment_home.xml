@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.egyfilm.pojo.MovieViewModel" />
+            type="com.example.egyfilm.pojo.viewModelUtils.MovieViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/App_back_color"
-        tools:context=".HomeFragment">
+        tools:context=".ui.HomeFragment">
 
         <TextView
             android:layout_width="wrap_content"

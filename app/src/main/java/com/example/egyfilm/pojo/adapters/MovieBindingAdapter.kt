@@ -35,8 +35,8 @@ fun TextView.setMovieRatingFromTMDBForSmallItem(movie: Movie?) {
 }
 
 
-@BindingAdapter("setMovieImageFromTMDBForLargeItem")
-fun ImageView.setImageFromTMDBForLargeItem(movie: MovieFullData?) {
+@BindingAdapter("setMovieImageFromTMDB")
+fun ImageView.setImageFromTMDB(movie: MovieFullData?) {
     Glide.with(context).load(Constants.IMG_BASE_URL + movie?.posterPath).into(this)
 }
 
@@ -51,9 +51,9 @@ fun RecyclerView.setMoviesRecyclerViewAdapterItems(movies: HashMap<String, Movie
     (adapter as MoviesAdapter).submitList(movies?.get("upcoming")?.results)
 }
 
-@BindingAdapter(value = ["itemsMap", "itemType"], requireAll = false)
-fun RecyclerView.itemsMap(movies: Movies?, itemType: Int?) {
-    adapter = MoviesAdapter()
+@BindingAdapter(value = ["itemsMap", "itemType","listener"], requireAll = false)
+fun RecyclerView.itemsMap(movies: Movies?, itemType: Int?, listener : MoviesAdapter.OnMovieItemClickListener) {
+    adapter = MoviesAdapter(listener)
     (adapter as MoviesAdapter).type = itemType
     (adapter as MoviesAdapter).submitList(movies?.results)
 }

@@ -8,6 +8,7 @@
         <variable
             name="movieItem"
             type="com.example.egyfilm.pojo.classes.Movie" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

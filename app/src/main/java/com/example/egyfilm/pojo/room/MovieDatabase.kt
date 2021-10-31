@@ -8,8 +8,10 @@ import androidx.room.TypeConverters
 import com.example.egyfilm.pojo.classes.*
 
 @Database(
-    entities = [Movie::class, ActorMovie::class, ActorFullData::class, Actor::class, Genre::class],
-    version = 2,
+    entities = [Movie::class, ActorMovie::class,
+        ActorFullData::class, Actor::class, Genre::class,
+        MovieFullData::class, MovieActors::class,ActorMovies::class],
+    version = 6,
     exportSchema = false
 )
 @TypeConverters(MovieTypeConverter::class)

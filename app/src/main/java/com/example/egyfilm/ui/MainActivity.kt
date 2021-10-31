@@ -1,20 +1,13 @@
 package com.example.egyfilm.ui
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.egyfilm.R
 import com.example.egyfilm.pojo.Constants
-import com.example.egyfilm.pojo.MovieViewModel
+import com.example.egyfilm.pojo.viewModelUtils.MovieViewModel
 import com.example.egyfilm.pojo.classes.MovieRelative
 
 class MainActivity : AppCompatActivity() {
@@ -36,21 +29,21 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun getActorMovies(id: Int) {
+    private fun getActorMovies(id: Long) {
         viewModel.getActorMovies(id)
         viewModel.actorMoviesLiveData.observe(this, Observer {
             Log.d("MainActivity", it.toString())
         })
     }
 
-    private fun getActorDetails(id: Int) {
+    private fun getActorDetails(id: Long) {
         viewModel.getActorDetails(id)
         viewModel.actorLiveData.observe(this, Observer {
             Log.d("MainActivity", it.toString())
         })
     }
 
-    private fun getMovieActors(id: Int) {
+    private fun getMovieActors(id: Long) {
         viewModel.getMovieActors(id)
         viewModel.movieActorsLiveData.observe(this, Observer {
             Log.d("MainActivity", it.toString())
@@ -58,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getMovieRelatives(id: Int, page: Int, relationship: String) {
+    private fun getMovieRelatives(id: Long, page: Int, relationship: String) {
         if (relationship.equals(Constants.SIMILAR))
             askAndObserveFor(id, page, relationship, viewModel.movieSimilarsLiveData)
         else
@@ -66,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun askAndObserveFor(
-        id: Int,
+        id: Long,
         page: Int,
         relationship: String,
         liveData: LiveData<MovieRelative>
@@ -78,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun getMovieFullData(id: Int) {
+    private fun getMovieFullData(id: Long) {
         viewModel.getMovieFullDetail(id)
 //        binding.viewModel = viewModel
 //        binding.lifecycleOwner = this
@@ -95,9 +88,9 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.genresLiveData.observe(this, Observer {
             for (genre in it.genres!!) {
-                viewModel.getGenreMovies(genre, 1,this)
+                viewModel.getGenreMovies(genre, 1)
             }
-            viewModel.getSpecialGenreMovies(1,this)
+            viewModel.getSpecialGenreMovies(1)
         })
 
 /*        viewModel.genresDataCompleted.observe(this, Observer {

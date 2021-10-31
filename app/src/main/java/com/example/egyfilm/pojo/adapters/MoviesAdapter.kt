@@ -1,6 +1,7 @@
 package com.example.egyfilm.pojo.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,16 +10,16 @@ import com.example.egyfilm.databinding.LargeMovieItemBinding
 import com.example.egyfilm.databinding.SmallMovieItemBinding
 import com.example.egyfilm.pojo.classes.Movie
 
-class MoviesAdapter :
+class MoviesAdapter (private val listener: OnMovieItemClickListener) :
     ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallBack) {
 
     var type: Int? = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (type == 1)
-            LargeMovieViewHolder.getMovieViewHolderInstance(parent)
+            LargeMovieViewHolder.getMovieViewHolderInstance(parent, listener)
         else
-            SmallMovieViewHolder.getMovieViewHolderInstance(parent)
+            SmallMovieViewHolder.getMovieViewHolderInstance(parent, listener)
     }
 
 
@@ -30,46 +31,70 @@ class MoviesAdapter :
 
     }
 
-    class SmallMovieViewHolder private constructor(private val binding: SmallMovieItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
+    class SmallMovieViewHolder private constructor(
+        private val binding: SmallMovieItemBinding,
+        private val listener: OnMovieItemClickListener
+    ) :
+        RecyclerView.ViewHolder(binding.root) , View.OnClickListener{
+        private lateinit var movie : Movie
         fun bindMovieItem(movieItem: Movie) {
+            movie = movieItem
+            binding.root.setOnClickListener(this)
             binding.movieItem = movieItem
             binding.executePendingBindings()
         }
 
         companion object {
-            fun getMovieViewHolderInstance(parent: ViewGroup): SmallMovieViewHolder {
+            fun getMovieViewHolderInstance(
+                parent: ViewGroup,
+                listener: OnMovieItemClickListener
+            ): SmallMovieViewHolder {
                 val binding =
                     SmallMovieItemBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
                     )
-                return SmallMovieViewHolder(binding)
+                return SmallMovieViewHolder(binding, listener)
             }
+        }
+
+        override fun onClick(p0: View?) {
+            listener.onMovieItemClick(movie)
         }
     }
 
 
-    class LargeMovieViewHolder private constructor(private val binding: LargeMovieItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
+    class LargeMovieViewHolder private constructor(
+        private val binding: LargeMovieItemBinding,
+        private val listener: OnMovieItemClickListener
+    ) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        private lateinit var movie: Movie
         fun bindMovieItem(movieItem: Movie) {
+            movie = movieItem
+            binding.root.setOnClickListener(this)
             binding.movieItem = movieItem
             binding.executePendingBindings()
         }
 
         companion object {
-            fun getMovieViewHolderInstance(parent: ViewGroup): LargeMovieViewHolder {
+            fun getMovieViewHolderInstance(
+                parent: ViewGroup,
+                listener: OnMovieItemClickListener
+            ): LargeMovieViewHolder {
                 val binding =
                     LargeMovieItemBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
                     )
-                return LargeMovieViewHolder(binding)
+                return LargeMovieViewHolder(binding, listener)
             }
+        }
+
+        override fun onClick(p0: View?) {
+            listener.onMovieItemClick(movie)
         }
     }
 
@@ -83,6 +108,11 @@ class MoviesAdapter :
             return oldItem == newItem
         }
 
+    }
+
+
+    interface OnMovieItemClickListener {
+        fun onMovieItemClick(movie: Movie)
     }
 
 }

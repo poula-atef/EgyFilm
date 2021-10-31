@@ -1,16 +1,19 @@
 package com.example.egyfilm.pojo.classes
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class Movies(val page: Int? = null, var results: List<Movie>? = null)
 
+@Parcelize
 @Entity(tableName = "movie")
 data class Movie(
-    @Expose(serialize = false, deserialize = false) @PrimaryKey(autoGenerate = true) val dbId: Int,
+    @Expose(serialize = false, deserialize = false) @PrimaryKey(autoGenerate = true) val dbId: Long,
     @Expose(serialize = false, deserialize = false) var category : String,
     @SerializedName("backdrop_path") val backdropPath: String?,
     @SerializedName("genre_ids")  val genreIds: List<Int>,
@@ -26,5 +29,4 @@ data class Movie(
     val popularity: Double,
     val title: String,
     val video: Boolean
-) {
-}
+) : Parcelable

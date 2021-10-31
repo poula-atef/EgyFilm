@@ -35,7 +35,7 @@ interface Api {
     //Get Movie Full Details
     @GET("movie/{movieId}")
     fun getMovieFullDetails(
-        @Path("movieId") id: Int,
+        @Path("movieId") id: Long,
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Deferred<MovieFullData>
@@ -43,7 +43,7 @@ interface Api {
     // Get Similar Movies List For A Movie
     @GET("movie/{movieId}/{relationship}")
     fun getMovieSimilars(
-        @Path("movieId") id: Int,
+        @Path("movieId") id: Long,
         @Path("relationship") relationship : String,
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
@@ -53,21 +53,21 @@ interface Api {
     // Get Actors For Movie
     @GET("movie/{movieId}/credits")
     fun getMovieActors(
-        @Path("movieId") id : Int,
+        @Path("movieId") id : Long,
         @Query("api_key") apikey: String
     ) : Deferred<MovieActors>
 
     // Get Actor Details
     @GET("person/{personId}")
     fun getActorDetails(
-        @Path("personId") id : Int,
+        @Path("personId") id : Long,
         @Query("api_key") apikey: String
     ) : Deferred<ActorFullData>
 
 
     @GET("person/{personId}/movie_credits")
     fun getActorMovies(
-        @Path("personId") id : Int,
+        @Path("personId") id : Long,
         @Query("api_key") apikey: String
     ):Deferred<ActorMovies>
 

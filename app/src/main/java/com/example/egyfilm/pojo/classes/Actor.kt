@@ -5,8 +5,10 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "movie_actors")
 data class MovieActors(
-    val id: Int,
+    @PrimaryKey
+    val id: Long,
     val cast: List<Actor>,
     val crew: List<Crew>
 )
@@ -20,7 +22,7 @@ data class Actor(
     @SerializedName("credit_id") val creditId: String,
     val adult: Boolean,
     val gender: Int,
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     val name: String,
     val popularity: Double,
     val character: String,
@@ -40,7 +42,7 @@ data class ActorFullData(
     val deathday: String,
     val gender: Int,
     val homepage: String,
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     val name: String,
     val popularity: Double
 )
@@ -75,16 +77,17 @@ data class Crew(
     @SerializedName("credit_id") val creditId: String,
     val adult: Boolean,
     val gender: Int,
-    val id: Int,
+    val id: Long,
     val name: String,
     val popularity: Double,
     val department: String,
     val job: String
 )
 
-
+@Entity(tableName = "actor_movies")
 data class ActorMovies(
+    @PrimaryKey
+    val id: Long,
     val cast: List<ActorMovie>,
-    val crew: List<String>,
-    val id: Int
+    val crew: List<String>
 )

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">EgyFilm</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="description">Description</string>
+    <string name="actors">Actors</string>
+    <string name="similar">Similar Movies</string>
+    <string name="recommendations">Recommendations</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="see_more"><![CDATA[See More>>]]></string>
 </resources>

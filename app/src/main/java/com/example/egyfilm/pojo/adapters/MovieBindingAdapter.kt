@@ -79,3 +79,21 @@ fun FrameLayout.setMovieRatingColor(movie: Movie?) {
         else -> ColorStateList.valueOf(Color.RED)
     }
 }
+
+@BindingAdapter("setMovieBackImageFromTMDB")
+fun ImageView.setMovieBackImageFromTMDB(movie : MovieFullData?){
+    if(movie?.backdropPath != null)
+        Glide.with(context).load(Constants.IMG_BASE_URL + movie.backdropPath).into(this)
+    else
+        Glide.with(context).load(Constants.IMG_BASE_URL + movie?.posterPath).into(this)
+}
+
+@BindingAdapter("setMovieDescription")
+fun TextView.setMovieDescription(movie: MovieFullData?){
+    text = movie?.overview
+}
+
+@BindingAdapter("setMovieTitle")
+fun TextView.setMovieTitle(movie: MovieFullData?){
+    text = movie?.title
+}

@@ -9,9 +9,8 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.egyfilm.pojo.Constants
-import com.example.egyfilm.pojo.classes.Movie
-import com.example.egyfilm.pojo.classes.MovieFullData
-import com.example.egyfilm.pojo.classes.Movies
+import com.example.egyfilm.pojo.classes.*
+import java.math.RoundingMode
 
 
 @BindingAdapter("setMovieTitleFromTMDBForLargeItem")
@@ -31,7 +30,7 @@ fun TextView.setMovieRatingFromTMDBForLargeItem(movie: Movie?) {
 
 @BindingAdapter("setMovieRatingFromTMDBForSmallItem")
 fun TextView.setMovieRatingFromTMDBForSmallItem(movie: Movie?) {
-    text = movie?.voteAverage.toString()
+    text = movie?.voteAverage?.toBigDecimal()?.setScale(1,RoundingMode.UP)?.toDouble().toString()
 }
 
 
@@ -51,8 +50,12 @@ fun RecyclerView.setMoviesRecyclerViewAdapterItems(movies: HashMap<String, Movie
     (adapter as MoviesAdapter).submitList(movies?.get("upcoming")?.results)
 }
 
-@BindingAdapter(value = ["itemsMap", "itemType","listener"], requireAll = false)
-fun RecyclerView.itemsMap(movies: Movies?, itemType: Int?, listener : MoviesAdapter.OnMovieItemClickListener) {
+@BindingAdapter(value = ["itemsMap", "itemType", "listener"], requireAll = false)
+fun RecyclerView.itemsMap(
+    movies: Movies?,
+    itemType: Int?,
+    listener: MoviesAdapter.OnMovieItemClickListener
+) {
     adapter = MoviesAdapter(listener)
     (adapter as MoviesAdapter).type = itemType
     (adapter as MoviesAdapter).submitList(movies?.results)
@@ -73,7 +76,7 @@ fun RecyclerView.setMainRecyclerViewItems(items: HashMap<String, Movies>?) {
 
 @BindingAdapter("setMovieRatingColor")
 fun FrameLayout.setMovieRatingColor(movie: Movie?) {
-     backgroundTintList = when {
+    backgroundTintList = when {
         movie?.voteAverage!! >= 7.5 -> ColorStateList.valueOf(Color.GREEN)
         movie.voteAverage >= 5 -> ColorStateList.valueOf(Color.YELLOW)
         else -> ColorStateList.valueOf(Color.RED)
@@ -81,19 +84,46 @@ fun FrameLayout.setMovieRatingColor(movie: Movie?) {
 }
 
 @BindingAdapter("setMovieBackImageFromTMDB")
-fun ImageView.setMovieBackImageFromTMDB(movie : MovieFullData?){
-    if(movie?.backdropPath != null)
+fun ImageView.setMovieBackImageFromTMDB(movie: MovieFullData?) {
+    if (movie?.backdropPath != null)
         Glide.with(context).load(Constants.IMG_BASE_URL + movie.backdropPath).into(this)
     else
         Glide.with(context).load(Constants.IMG_BASE_URL + movie?.posterPath).into(this)
 }
 
 @BindingAdapter("setMovieDescription")
-fun TextView.setMovieDescription(movie: MovieFullData?){
+fun TextView.setMovieDescription(movie: MovieFullData?) {
     text = movie?.overview
 }
 
 @BindingAdapter("setMovieTitle")
-fun TextView.setMovieTitle(movie: MovieFullData?){
+fun TextView.setMovieTitle(movie: MovieFullData?) {
     text = movie?.title
+}
+
+@BindingAdapter("setRelativeRecyclerViewItems")
+fun RecyclerView.setRelativeRecyclerViewItems(relative: MovieRelative?) {
+    if (relative?.results != null)
+        (adapter as MoviesAdapter).submitList(relative.results)
+}
+
+@BindingAdapter("setActorsRecyclerViewItems")
+fun RecyclerView.setActorsRecyclerViewItems(actors: MovieActors?){
+    if (actors?.cast != null)
+        (adapter as ActorsAdapter).submitList(actors.cast)
+}
+
+@BindingAdapter("setActorImage")
+fun ImageView.setActorImage(actor: Actor?){
+    Glide.with(this).load(Constants.IMG_BASE_URL + actor?.profilePath).into(this)
+}
+
+@BindingAdapter("setActorName")
+fun TextView.setActorName(actor: Actor?){
+     text = actor?.character
+}
+
+@BindingAdapter("setActorRealName")
+fun TextView.setActorRealName(actor: Actor?){
+    text = actor?.originalName
 }

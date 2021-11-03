@@ -231,6 +231,7 @@ object MovieRepository {
             var result: MovieRelative? = null
             try {
                 result = response.await()
+                Log.d("TAG", "$relationship + ${result.results}")
             } catch (t: Throwable) {
             }
             result

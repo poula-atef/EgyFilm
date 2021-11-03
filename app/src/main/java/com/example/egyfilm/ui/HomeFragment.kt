@@ -27,6 +27,7 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         val factory = MovieViewModelFactory(requireContext())
         viewModel = ViewModelProviders.of(this, factory).get(MovieViewModel::class.java)
+        viewModel.fetchData()
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         binding.rec.adapter = RecAdapter(this)

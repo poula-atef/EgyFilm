@@ -25,7 +25,7 @@ data class MovieFullData(
     val budget: Int,
     val genres: List<Genre>,
     val homepage: String,
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     val overview: String,
     val popularity: Double,
     val revenue: Int,
@@ -39,7 +39,7 @@ data class MovieFullData(
 
 @Parcelize
 data class BelongsToCollection(
-    val id: Int,
+    val id: Long,
     val name: String,
     @SerializedName("poster_path") val posterPath: String,
     @SerializedName("backdrop_path") val backdropPath: String
@@ -49,7 +49,7 @@ data class BelongsToCollection(
 data class ProductionCompanies(
     @SerializedName("logo_path") val logoPath: String,
     @SerializedName("origin_country") val originCountry: String,
-    val id: Int,
+    val id: Long,
     val name: String
 ) : Parcelable
 

@@ -4,10 +4,9 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import com.example.egyfilm.pojo.Constants
 import com.example.egyfilm.pojo.classes.*
 import kotlinx.coroutines.*
@@ -65,13 +64,16 @@ class MovieViewModel(private val context: Context) : ViewModel() {
 
     private val job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
-    init {
-        MovieRepository.isConnected = isConnectedToInternet(context)
-        getAllFrontMovies()
-    }
 
     //endregion
 
+    fun fetchData() {
+        if(genresLiveData.value != null)
+            return
+        MovieRepository.isConnected = isConnectedToInternet(context)
+        getAllFrontMovies()
+        Log.d("TAG", "fetchData !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!111")
+    }
 
     private fun getAllFrontMovies() {
 
@@ -85,9 +87,8 @@ class MovieViewModel(private val context: Context) : ViewModel() {
         }
 
         val genresDataObserver = Observer<HashMap<String, Movies>> {
-            for (movies in it)
-                Log.d("ViewModel", "${movies.key} -----> ${movies.value.results.toString()}")
-        }
+                Log.d("ViewModel", "Genres Is Here !!!!!!!")
+            }
 
         genresLiveData.observeForever(genresObserver)
 
@@ -165,6 +166,7 @@ class MovieViewModel(private val context: Context) : ViewModel() {
 
             MovieRepository.genresDataCompleted.observeForever(Observer {
                 _genresDataCompleted.value = it
+                Log.d("TAG", "THERE IS NEW DATA HERE !!!!!")
             })
 
 

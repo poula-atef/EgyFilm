@@ -11,7 +11,7 @@ import com.example.egyfilm.pojo.classes.*
     entities = [Movie::class, ActorMovie::class,
         ActorFullData::class, Actor::class, Genre::class,
         MovieFullData::class, MovieActors::class,ActorMovies::class],
-    version = 6,
+    version = 7,
     exportSchema = false
 )
 @TypeConverters(MovieTypeConverter::class)

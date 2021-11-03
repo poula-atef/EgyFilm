@@ -10,7 +10,7 @@ import com.example.egyfilm.databinding.LargeMovieItemBinding
 import com.example.egyfilm.databinding.SmallMovieItemBinding
 import com.example.egyfilm.pojo.classes.Movie
 
-class MoviesAdapter (private val listener: OnMovieItemClickListener) :
+class MoviesAdapter(private val listener: OnMovieItemClickListener) :
     ListAdapter<Movie, RecyclerView.ViewHolder>(MovieDiffCallBack) {
 
     var type: Int? = 0
@@ -35,8 +35,8 @@ class MoviesAdapter (private val listener: OnMovieItemClickListener) :
         private val binding: SmallMovieItemBinding,
         private val listener: OnMovieItemClickListener
     ) :
-        RecyclerView.ViewHolder(binding.root) , View.OnClickListener{
-        private lateinit var movie : Movie
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        private lateinit var movie: Movie
         fun bindMovieItem(movieItem: Movie) {
             movie = movieItem
             binding.root.setOnClickListener(this)
@@ -60,7 +60,7 @@ class MoviesAdapter (private val listener: OnMovieItemClickListener) :
         }
 
         override fun onClick(p0: View?) {
-            listener.onMovieItemClick(movie)
+            listener.onMovieItemClick(movie, itemView)
         }
     }
 
@@ -94,7 +94,7 @@ class MoviesAdapter (private val listener: OnMovieItemClickListener) :
         }
 
         override fun onClick(p0: View?) {
-            listener.onMovieItemClick(movie)
+            listener.onMovieItemClick(movie, itemView)
         }
     }
 
@@ -112,7 +112,7 @@ class MoviesAdapter (private val listener: OnMovieItemClickListener) :
 
 
     interface OnMovieItemClickListener {
-        fun onMovieItemClick(movie: Movie)
+        fun onMovieItemClick(movie: Movie, view: View)
     }
 
 }

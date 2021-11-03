@@ -69,8 +69,7 @@
             app:layout_constraintTop_toTopOf="@+id/cardView"
             app:layout_constraintVertical_bias="0.1"
             app:layout_goneMarginEnd="@dimen/_5sdp"
-            tools:foregroundTint="#0f0"
-            >
+            tools:foregroundTint="#0f0">
 
             <TextView
                 android:id="@+id/rating"

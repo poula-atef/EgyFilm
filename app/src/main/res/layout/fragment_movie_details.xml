@@ -96,19 +96,35 @@
             android:textAlignment="center"
             android:textColor="@color/text_color_1"
             android:textSize="@dimen/_25ssp"
+            tools:text="Dune"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/genre_rec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            setGenresRecyclerViewData = "@{movie}"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:layout_marginHorizontal="@dimen/_4sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:itemCount="15"
+            tools:listitem="@layout/genre_item" />
 
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/margin_top"
+            android:layout_marginVertical="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title">
+            app:layout_constraintTop_toBottomOf="@+id/genre_rec">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,10 +160,10 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/actor_rec"
+                    setActorsRecyclerViewItems="@{viewModel.movieActorsLiveData}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    setActorsRecyclerViewItems = "@{viewModel.movieActorsLiveData}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="15"
                     tools:listitem="@layout/actor_item" />
@@ -179,9 +195,9 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/similar_rec"
+                    setRelativeRecyclerViewItems="@{viewModel.movieSimilarsLiveData}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    setRelativeRecyclerViewItems="@{viewModel.movieSimilarsLiveData}"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="15"
@@ -214,9 +230,9 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recommendations_rec"
+                    setRelativeRecyclerViewItems="@{viewModel.movieRecommendationsLiveData}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    setRelativeRecyclerViewItems="@{viewModel.movieRecommendationsLiveData}"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="15"
@@ -225,6 +241,48 @@
 
             </LinearLayout>
         </ScrollView>
+
+        <ImageView
+            android:id="@+id/love_img"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_heart"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintTop_toTopOf="@+id/cardView"
+            app:layout_constraintVertical_bias="0.8" />
+
+        <FrameLayout
+            android:id="@+id/rating_container"
+            setMovieFullDetailsRatingColor="@{movie}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_back"
+            android:foregroundTint="#0f0"
+            app:layout_constraintBottom_toBottomOf="@+id/love_img"
+            app:layout_constraintEnd_toStartOf="@+id/cardView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/love_img"
+            app:layout_constraintVertical_bias="0.8"
+            tools:backgroundTint="#0f0">
+
+            <TextView
+                android:id="@+id/rating"
+                setMovieRatingInMovieDetails="@{movie}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_2sdp"
+                android:background="@drawable/round_back"
+                android:fontFamily="@font/allerta_stencil"
+                android:padding="@dimen/_5sdp"
+                android:textColor="@color/text_color_1"
+                android:textSize="@dimen/_18ssp"
+                tools:text="7.5" />
+
+        </FrameLayout>
+
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 

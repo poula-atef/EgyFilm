@@ -26,5 +26,12 @@
         <argument
             android:name="movie"
             app:argType="com.example.egyfilm.pojo.classes.MovieFullData" />
+        <action
+            android:id="@+id/action_movieDetailsFragment_self"
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/enter_from_left"
+            app:exitAnim="@anim/exit_to_right"
+            app:popEnterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_left" />
     </fragment>
 </navigation>

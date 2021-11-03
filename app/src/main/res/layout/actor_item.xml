@@ -33,6 +33,7 @@
 
             <ImageView
                 android:id="@+id/img"
+                android:transitionName="@string/img_trans"
                 setActorImage="@{actor}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

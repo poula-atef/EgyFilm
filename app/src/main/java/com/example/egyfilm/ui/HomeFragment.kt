@@ -5,21 +5,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import com.example.egyfilm.R
 import com.example.egyfilm.databinding.FragmentHomeBinding
+import com.example.egyfilm.pojo.adapters.GenresAdapter
 import com.example.egyfilm.pojo.viewModelUtils.MovieViewModel
 import com.example.egyfilm.pojo.viewModelUtils.MovieViewModelFactory
 import com.example.egyfilm.pojo.adapters.MoviesAdapter
 import com.example.egyfilm.pojo.adapters.RecAdapter
+import com.example.egyfilm.pojo.classes.Genre
 import com.example.egyfilm.pojo.classes.Movie
 
 
-class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
+class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
+    GenresAdapter.OnGenreItemClickListener {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: MovieViewModel
-    private lateinit var adapter: MoviesAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,30 +37,11 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         binding.rec.adapter = RecAdapter(this)
+        binding.genreRec.adapter = GenresAdapter(this)
         return binding.root
     }
 
-/*    private fun getAllFrontMovies() {
-
-        viewModel.getGenres(requireContext())
-
-        viewModel.genresLiveData.observe(this.viewLifecycleOwner, Observer {
-            for (genre in it.genres!!) {
-                viewModel.getGenreMovies(genre, 1)
-            }
-            viewModel.getSpecialGenreMovies(1)
-        })
-
-        viewModel.genresDataCompleted.observe(this.viewLifecycleOwner, Observer {
-            for (movies in it)
-                Log.d("ViewModel", "${movies.key} -----> ${movies.value.results.toString()}")
-        })
-
-    }
-*/
-
-
-    override fun onMovieItemClick(movie: Movie) {
+    override fun onMovieItemClick(movie: Movie, view: View) {
         viewModel.getMovieFullDetail(movie.id)
         viewModel.selectedMovieLiveData.observe(this.viewLifecycleOwner, Observer {
             Navigation.findNavController(binding.root)
@@ -65,6 +52,10 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
                 )
             viewModel.doneSelectingMovie()
         })
+    }
+
+    override fun onGenreItemClick(genre: Genre) {
+        Toast.makeText(requireContext(),genre.name,Toast.LENGTH_SHORT).show()
     }
 
 }

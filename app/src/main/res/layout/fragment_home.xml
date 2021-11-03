@@ -18,6 +18,7 @@
         tools:context=".ui.HomeFragment">
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -60,21 +61,37 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/genre_rec"
+            setGenresRecyclerViewDataFromViewModel="@{viewModel.genresLiveData}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_4sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            tools:itemCount="15"
+            tools:listitem="@layout/genre_item" />
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rec"
             setMainRecyclerViewItems="@{viewModel.genresDataCompleted}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2"
+            app:layout_constraintTop_toBottomOf="@+id/genre_rec"
             tools:itemCount="15"
             tools:listitem="@layout/rec_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/actor_fab"
             android:layout_width="@dimen/_45sdp"
             android:layout_height="@dimen/_45sdp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -87,6 +104,21 @@
             app:fabCustomSize="@dimen/_45sdp"
             android:src="@drawable/ic_actor"
             app:maxImageSize="35dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/search_fab"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_margin="15dp"
+            android:backgroundTint="@color/app_secondary_color"
+            android:elevation="25dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_search"
+            app:backgroundTint="@color/app_secondary_color"
+            app:fabCustomSize="@dimen/_45sdp"
+            app:layout_constraintBottom_toTopOf="@+id/actor_fab"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:maxImageSize="35dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

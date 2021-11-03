@@ -127,3 +127,31 @@ fun TextView.setActorName(actor: Actor?){
 fun TextView.setActorRealName(actor: Actor?){
     text = actor?.originalName
 }
+
+@BindingAdapter("setMovieRatingInMovieDetails")
+fun TextView.setMovieRatingInMovieDetails(movie:MovieFullData?){
+    text = movie?.voteAverage?.toBigDecimal()?.setScale(1,RoundingMode.UP)?.toDouble().toString()
+}
+
+@BindingAdapter("setMovieFullDetailsRatingColor")
+fun FrameLayout.setMovieFullDetailsRatingColor(movie: MovieFullData?) {
+    backgroundTintList = when {
+        movie?.voteAverage!! >= 7.5 -> ColorStateList.valueOf(Color.GREEN)
+        movie.voteAverage >= 5 -> ColorStateList.valueOf(Color.YELLOW)
+        else -> ColorStateList.valueOf(Color.RED)
+    }
+}
+
+@BindingAdapter("setTextFromGenre")
+fun TextView.setTextFromGenre(genre: Genre?){
+    text = genre?.name
+}
+
+@BindingAdapter("setGenresRecyclerViewData")
+fun RecyclerView.setGenresRecyclerViewData(movie: MovieFullData?){
+    (adapter as GenresAdapter).submitList(movie?.genres)
+}
+@BindingAdapter("setGenresRecyclerViewDataFromViewModel")
+fun RecyclerView.setGenresRecyclerViewDataFromViewModel(genres:Genres?){
+    (adapter as GenresAdapter).submitList(genres?.genres)
+}

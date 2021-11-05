@@ -226,4 +226,8 @@ class MovieViewModel(private val context: Context) : ViewModel() {
         job.cancel()
     }
 
+    fun doneSelectingActor() {
+        _actorLiveData.value = null
+    }
+
 }

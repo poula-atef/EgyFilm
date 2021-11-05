@@ -322,6 +322,7 @@ object MovieRepository {
                     addActorMoviesToDatabase(result)
                 }
                 result = getActorMoviesFromDatabase(id)
+                Log.d("TAG", result.toString())
             } catch (t: Throwable) {
             }
             result

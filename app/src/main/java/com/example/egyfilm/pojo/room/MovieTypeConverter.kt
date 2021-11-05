@@ -125,4 +125,15 @@ class MovieTypeConverter {
         return Gson().toJson(lst)
     }
 
+    @TypeConverter
+    fun convertStringToActorMovieCrewList(str: String): List<ActorMovieCrew> {
+        return Gson().fromJson(str, object : TypeToken<ArrayList<ActorMovieCrew?>?>() {}.type)
+    }
+
+    @TypeConverter
+    fun convertActorMovieCrewListToString(lst : List<ActorMovieCrew>) : String{
+        return Gson().toJson(lst)
+    }
+
+
 }

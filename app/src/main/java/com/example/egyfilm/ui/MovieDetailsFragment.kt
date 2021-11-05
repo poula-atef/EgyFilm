@@ -61,7 +61,16 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
     }
 
     override fun onActorItemClick(actor: Actor) {
-        Toast.makeText(requireContext(), actor.originalName, Toast.LENGTH_SHORT).show()
+        viewModel.getActorDetails(actor.id)
+        viewModel.actorLiveData.observe(this.viewLifecycleOwner, Observer {
+            Navigation.findNavController(binding.root)
+                .navigate(
+                    MovieDetailsFragmentDirections.actionMovieDetailsFragmentToUserDetailsFragment(
+                        it ?: return@Observer
+                    )
+                )
+            viewModel.doneSelectingActor()
+        })
     }
 
     override fun onGenreItemClick(genre: Genre) {

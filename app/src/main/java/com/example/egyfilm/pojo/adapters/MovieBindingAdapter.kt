@@ -30,7 +30,7 @@ fun TextView.setMovieRatingFromTMDBForLargeItem(movie: Movie?) {
 
 @BindingAdapter("setMovieRatingFromTMDBForSmallItem")
 fun TextView.setMovieRatingFromTMDBForSmallItem(movie: Movie?) {
-    text = movie?.voteAverage?.toBigDecimal()?.setScale(1,RoundingMode.UP)?.toDouble().toString()
+    text = movie?.voteAverage?.toBigDecimal()?.setScale(1, RoundingMode.UP)?.toDouble().toString()
 }
 
 
@@ -42,7 +42,7 @@ fun ImageView.setImageFromTMDB(movie: MovieFullData?) {
 
 @BindingAdapter("setMovieImageFromTMDBForSmallItem")
 fun ImageView.setImageFromTMDBForSmall(movie: Movie?) {
-    Glide.with(context).load(Constants.IMG_BASE_URL + movie?.posterPath).into(this)
+    Glide.with(context).load(Constants.IMG_BASE_URL + movie?.posterPath ?: return).into(this)
 }
 
 @BindingAdapter("setMoviesRecyclerViewAdapterItems")
@@ -108,29 +108,29 @@ fun RecyclerView.setRelativeRecyclerViewItems(relative: MovieRelative?) {
 }
 
 @BindingAdapter("setActorsRecyclerViewItems")
-fun RecyclerView.setActorsRecyclerViewItems(actors: MovieActors?){
+fun RecyclerView.setActorsRecyclerViewItems(actors: MovieActors?) {
     if (actors?.cast != null)
         (adapter as ActorsAdapter).submitList(actors.cast)
 }
 
 @BindingAdapter("setActorImage")
-fun ImageView.setActorImage(actor: Actor?){
+fun ImageView.setActorImage(actor: Actor?) {
     Glide.with(this).load(Constants.IMG_BASE_URL + actor?.profilePath).into(this)
 }
 
 @BindingAdapter("setActorName")
-fun TextView.setActorName(actor: Actor?){
-     text = actor?.character
+fun TextView.setActorName(actor: Actor?) {
+    text = actor?.character
 }
 
 @BindingAdapter("setActorRealName")
-fun TextView.setActorRealName(actor: Actor?){
+fun TextView.setActorRealName(actor: Actor?) {
     text = actor?.originalName
 }
 
 @BindingAdapter("setMovieRatingInMovieDetails")
-fun TextView.setMovieRatingInMovieDetails(movie:MovieFullData?){
-    text = movie?.voteAverage?.toBigDecimal()?.setScale(1,RoundingMode.UP)?.toDouble().toString()
+fun TextView.setMovieRatingInMovieDetails(movie: MovieFullData?) {
+    text = movie?.voteAverage?.toBigDecimal()?.setScale(1, RoundingMode.UP)?.toDouble().toString()
 }
 
 @BindingAdapter("setMovieFullDetailsRatingColor")
@@ -143,15 +143,40 @@ fun FrameLayout.setMovieFullDetailsRatingColor(movie: MovieFullData?) {
 }
 
 @BindingAdapter("setTextFromGenre")
-fun TextView.setTextFromGenre(genre: Genre?){
+fun TextView.setTextFromGenre(genre: Genre?) {
     text = genre?.name
 }
 
 @BindingAdapter("setGenresRecyclerViewData")
-fun RecyclerView.setGenresRecyclerViewData(movie: MovieFullData?){
+fun RecyclerView.setGenresRecyclerViewData(movie: MovieFullData?) {
     (adapter as GenresAdapter).submitList(movie?.genres)
 }
+
 @BindingAdapter("setGenresRecyclerViewDataFromViewModel")
-fun RecyclerView.setGenresRecyclerViewDataFromViewModel(genres:Genres?){
+fun RecyclerView.setGenresRecyclerViewDataFromViewModel(genres: Genres?) {
     (adapter as GenresAdapter).submitList(genres?.genres)
+}
+
+@BindingAdapter("setActorImageFromFullData")
+fun ImageView.setActorImageFromFullData(actor: ActorFullData?) {
+    Glide.with(this).load(Constants.IMG_BASE_URL + actor?.profilePath).into(this)
+}
+
+@BindingAdapter("setActorFullDataName")
+fun TextView.setActorFullDataName(actor: ActorFullData?) {
+    text = actor?.name
+}
+
+@BindingAdapter("setActorOverView")
+fun TextView.setActorOverView(actor: ActorFullData?) {
+    text = actor?.biography
+}
+
+@BindingAdapter("setActorsMoviesRecyclerViewItems")
+fun RecyclerView.setActorsMoviesRecyclerViewItems(movies: ActorMovies?) {
+    val movieLst = mutableListOf<Movie>()
+    for (movie in movies?.cast ?: return) {
+        movieLst.add(Movie(movie))
+    }
+    (adapter as MoviesAdapter).submitList(movieLst)
 }

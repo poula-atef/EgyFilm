@@ -65,10 +65,19 @@ interface Api {
     ) : Deferred<ActorFullData>
 
 
+    // Get Actor Movies
     @GET("person/{personId}/movie_credits")
     fun getActorMovies(
         @Path("personId") id : Long,
         @Query("api_key") apikey: String
     ):Deferred<ActorMovies>
+
+
+    //Get Movie Trailers
+    @GET("movie/{movieId}}/videos")
+    fun getMovieTrailers(
+        @Path("movieId") id : Long,
+        @Query("api_key") apiKey : String
+    ):Deferred<MovieTrailers>
 
 }

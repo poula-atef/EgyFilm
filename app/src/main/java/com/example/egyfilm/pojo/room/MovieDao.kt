@@ -28,6 +28,10 @@ interface MovieDao {
     @Query("select * from movie_actors where id =:id")
     fun getMovieActors(id: Long): MovieActors
 
+    @Query("select * from movie_trailer where id =:id")
+    fun getMovieTrailer(id: Long): MovieTrailer
+
+
 
     @Insert
     fun insertActorMovie(movie: ActorMovies)
@@ -50,6 +54,11 @@ interface MovieDao {
     @Insert
     fun insertMovieActors(movie: MovieActors)
 
+    @Insert
+    fun insertMovieTrailer(movieTrailer: MovieTrailer)
+
+
+
 
     @Query("delete from actor_movies where id =:id")
     fun deleteActorMovies(id: Long)
@@ -69,4 +78,6 @@ interface MovieDao {
     @Query("delete from movie_actors where id =:id")
     fun deleteMovieActors(id: Long)
 
+    @Query("delete from movie_trailer where id =:id")
+    fun deleteMovieTrailer(id: Long)
 }

@@ -10,8 +10,9 @@ import com.example.egyfilm.pojo.classes.*
 @Database(
     entities = [Movie::class, ActorMovie::class,
         ActorFullData::class, Actor::class, Genre::class,
-        MovieFullData::class, MovieActors::class, ActorMovies::class],
-    version = 8,
+        MovieFullData::class, MovieActors::class, ActorMovies::class,
+        MovieTrailer::class],
+    version = 9,
     exportSchema = false
 )
 @TypeConverters(MovieTypeConverter::class)

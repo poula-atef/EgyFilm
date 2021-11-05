@@ -27,6 +27,10 @@ class MovieViewModel(private val context: Context) : ViewModel() {
         get() = _genreMoviesLiveData
 
 
+    private val _movieTrailerLiveData = MutableLiveData<MovieTrailers>()
+    val movieTrailerLiveData: LiveData<MovieTrailers>
+        get() = _movieTrailerLiveData
+
     private val _genresDataCompleted = MutableLiveData<HashMap<String, Movies>>()
     val genresDataCompleted: LiveData<HashMap<String, Movies>>
         get() = _genresDataCompleted
@@ -68,7 +72,7 @@ class MovieViewModel(private val context: Context) : ViewModel() {
     //endregion
 
     fun fetchData() {
-        if(genresLiveData.value != null)
+        if (genresLiveData.value != null)
             return
         MovieRepository.isConnected = isConnectedToInternet(context)
         getAllFrontMovies()
@@ -87,8 +91,8 @@ class MovieViewModel(private val context: Context) : ViewModel() {
         }
 
         val genresDataObserver = Observer<HashMap<String, Movies>> {
-                Log.d("ViewModel", "Genres Is Here !!!!!!!")
-            }
+            Log.d("ViewModel", "Genres Is Here !!!!!!!")
+        }
 
         genresLiveData.observeForever(genresObserver)
 
@@ -200,6 +204,16 @@ class MovieViewModel(private val context: Context) : ViewModel() {
         uiScope.launch {
             _genresLiveData.value = MovieRepository.getAllGenres(context) ?: return@launch
             Log.d("Genres", _genresLiveData.value.toString())
+        }
+    }
+
+    //endregion
+
+    //region Get Movie Trailers
+
+    fun getMovieTrailer(movieId: Long) {
+        uiScope.launch {
+            _movieTrailerLiveData.value = MovieRepository.getMovieTrailers(movieId)
         }
     }
 

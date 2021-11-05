@@ -344,6 +344,47 @@ object MovieRepository {
     //endregion
 
 
+    //region Movie Trailer
+
+    suspend fun getMovieTrailers(movieId: Long): MovieTrailers? {
+        return withContext(Dispatchers.IO) {
+            val response = movieApi.getMovieTrailers(movieId, Constants.API_KEY)
+            var result: MovieTrailers? = null
+            var trailer : MovieTrailer? = null
+            try {
+                if (isConnected) {
+                    result = response.await()
+                    if (result.results.isNotEmpty()) {
+                        removeMovieTrailerFromDatabase(movieId)
+                        trailer = result.results.get(0)
+                        trailer.movieId = movieId
+                        addMovieTrailerToDatabase(trailer)
+                    }
+                    result.results = mutableListOf(getMovieTrailerFromDatabase(movieId))
+                }
+            } catch (t: Throwable) {
+
+            }
+            result
+        }
+    }
+
+    private fun getMovieTrailerFromDatabase(movieId: Long): MovieTrailer {
+        return daoInstance.getMovieTrailer(movieId)
+    }
+
+    private fun addMovieTrailerToDatabase(movie: MovieTrailer) {
+        daoInstance.insertMovieTrailer(movie)
+    }
+
+    private fun removeMovieTrailerFromDatabase(movieId: Long) {
+        daoInstance.deleteMovieTrailer(movieId)
+    }
+
+
+    //endregion
+
+
     //region save images and get it to and from room
     /*            movie.posterImage = Glide.with(context).`as`(ByteArray::class.java).load(movie.posterPath).submit().get()
             movie.backdropImage = Glide.with(context).`as`(ByteArray::class.java).load(movie.posterPath).submit().get()

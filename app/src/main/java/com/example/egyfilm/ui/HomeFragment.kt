@@ -42,7 +42,7 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
     }
 
     override fun onMovieItemClick(movie: Movie, view: View) {
-        viewModel.getMovieFullDetail(movie.id)
+        viewModel.getMovieFullDetail(movie.id!!)
         viewModel.selectedMovieLiveData.observe(this.viewLifecycleOwner, Observer {
             Navigation.findNavController(binding.root)
                 .navigate(

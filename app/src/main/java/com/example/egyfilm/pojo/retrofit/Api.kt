@@ -44,40 +44,49 @@ interface Api {
     @GET("movie/{movieId}/{relationship}")
     fun getMovieSimilars(
         @Path("movieId") id: Long,
-        @Path("relationship") relationship : String,
+        @Path("relationship") relationship: String,
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
         @Query("page") page: Int
-    ) : Deferred<MovieRelative>
+    ): Deferred<MovieRelative>
 
     // Get Actors For Movie
     @GET("movie/{movieId}/credits")
     fun getMovieActors(
-        @Path("movieId") id : Long,
+        @Path("movieId") id: Long,
         @Query("api_key") apikey: String
-    ) : Deferred<MovieActors>
+    ): Deferred<MovieActors>
 
     // Get Actor Details
     @GET("person/{personId}")
     fun getActorDetails(
-        @Path("personId") id : Long,
+        @Path("personId") id: Long,
         @Query("api_key") apikey: String
-    ) : Deferred<ActorFullData>
+    ): Deferred<ActorFullData>
 
 
     // Get Actor Movies
     @GET("person/{personId}/movie_credits")
     fun getActorMovies(
-        @Path("personId") id : Long,
+        @Path("personId") id: Long,
         @Query("api_key") apikey: String
-    ):Deferred<ActorMovies>
+    ): Deferred<ActorMovies>
 
 
     //Get Movie Trailers
     @GET("movie/{movieId}}/videos")
     fun getMovieTrailers(
-        @Path("movieId") id : Long,
-        @Query("api_key") apiKey : String
-    ):Deferred<MovieTrailers>
+        @Path("movieId") id: Long,
+        @Query("api_key") apiKey: String
+    ): Deferred<MovieTrailers>
+
+
+    //Get Popular Actors
+    @GET("person/popular")
+    fun getPopularActors(
+        @Query("page") page: Int,
+        @Query("language") language: String,
+        @Query("api_key") apiKey: String
+    ):Deferred<PopularActors>
 
 }

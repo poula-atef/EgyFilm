@@ -1,5 +1,6 @@
 package com.example.egyfilm.pojo.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ class ActorsAdapter(private val listener: OnActorItemClickListener) :
     override fun onBindViewHolder(holder: ActorViewHolder, position: Int) {
         holder.bindActorItem(getItem(position))
     }
+
 
     class ActorViewHolder private constructor(
         private val binding: ActorItemBinding,

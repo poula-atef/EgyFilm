@@ -350,7 +350,7 @@ object MovieRepository {
         return withContext(Dispatchers.IO) {
             val response = movieApi.getMovieTrailers(movieId, Constants.API_KEY)
             var result: MovieTrailers? = null
-            var trailer : MovieTrailer? = null
+            var trailer: MovieTrailer? = null
             try {
                 if (isConnected) {
                     result = response.await()
@@ -381,6 +381,28 @@ object MovieRepository {
         daoInstance.deleteMovieTrailer(movieId)
     }
 
+
+    //endregion
+
+
+    //region Popular Actors
+
+    suspend fun getPopularActors(page: Int): PopularActors? {
+        return withContext(Dispatchers.IO) {
+            val response = movieApi.getPopularActors(
+                page,
+                Locale.getDefault().language,
+                Constants.API_KEY
+            )
+            var result: PopularActors? = null
+            try {
+                result = response.await()
+            } catch (t: Throwable) {
+                
+            }
+            result
+        }
+    }
 
     //endregion
 

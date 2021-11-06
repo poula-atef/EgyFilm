@@ -109,8 +109,9 @@ fun RecyclerView.setRelativeRecyclerViewItems(relative: MovieRelative?) {
 
 @BindingAdapter("setActorsRecyclerViewItems")
 fun RecyclerView.setActorsRecyclerViewItems(actors: MovieActors?) {
-    if (actors?.cast != null)
+    if (actors?.cast != null) {
         (adapter as ActorsAdapter).submitList(actors.cast)
+    }
 }
 
 @BindingAdapter("setActorImage")

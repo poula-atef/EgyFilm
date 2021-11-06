@@ -17,19 +17,34 @@ data class MovieActors(
 
 @Entity(tableName = "actor")
 data class Actor(
-    @SerializedName("known_for_department") val knownForDepartment: String,
-    @SerializedName("original_name") val originalName: String,
-    @SerializedName("profile_path") val profilePath: String,
+    @SerializedName("known_for_department") val knownForDepartment: String?,
+    @SerializedName("original_name") val originalName: String?,
+    @SerializedName("profile_path") val profilePath: String?,
     @SerializedName("cast_id") val castId: Int,
     @SerializedName("credit_id") val creditId: String,
-    val adult: Boolean,
-    val gender: Int,
+    val adult: Boolean?,
+    val gender: Int?,
     @PrimaryKey val id: Long,
     val name: String,
-    val popularity: Double,
+    val popularity: Double?,
     val character: String,
     val order: Int
-)
+) {
+    constructor(actor: ActorFullData) : this(
+        actor.knownForDepartment,
+        actor.name,
+        actor.profilePath,
+        -1,
+        "",
+        actor.adult,
+        actor.gender,
+        actor.id,
+        actor.name,
+        actor.popularity,
+        "",
+        -1
+    )
+}
 
 @Entity(tableName = "actor_full_data")
 @Parcelize
@@ -86,24 +101,24 @@ data class Crew(
     val job: String
 )
 
-data class ActorMovieCrew (
-    @SerializedName("video") var video : Boolean,
-    @SerializedName("vote_average") var voteAverage : Double,
-    @SerializedName("overview") var overview : String,
-    @SerializedName("release_date") var releaseDate : String,
-    @SerializedName("vote_count") var voteCount : Int,
-    @SerializedName("adult") var adult : Boolean,
-    @SerializedName("backdrop_path") var backdropPath : String,
-    @SerializedName("title") var title : String,
-    @SerializedName("genre_ids") var genreIds : List<Int>,
-    @SerializedName("id") var id : Int,
-    @SerializedName("original_language") var originalLanguage : String,
-    @SerializedName("original_title") var originalTitle : String,
-    @SerializedName("poster_path") var posterPath : String,
-    @SerializedName("popularity") var popularity : Double,
-    @SerializedName("credit_id") var creditId : String,
-    @SerializedName("department") var department : String,
-    @SerializedName("job") var job : String
+data class ActorMovieCrew(
+    @SerializedName("video") var video: Boolean,
+    @SerializedName("vote_average") var voteAverage: Double,
+    @SerializedName("overview") var overview: String,
+    @SerializedName("release_date") var releaseDate: String,
+    @SerializedName("vote_count") var voteCount: Int,
+    @SerializedName("adult") var adult: Boolean,
+    @SerializedName("backdrop_path") var backdropPath: String,
+    @SerializedName("title") var title: String,
+    @SerializedName("genre_ids") var genreIds: List<Int>,
+    @SerializedName("id") var id: Int,
+    @SerializedName("original_language") var originalLanguage: String,
+    @SerializedName("original_title") var originalTitle: String,
+    @SerializedName("poster_path") var posterPath: String,
+    @SerializedName("popularity") var popularity: Double,
+    @SerializedName("credit_id") var creditId: String,
+    @SerializedName("department") var department: String,
+    @SerializedName("job") var job: String
 
 )
 
@@ -113,4 +128,44 @@ data class ActorMovies(
     val id: Long,
     val cast: List<ActorMovie>,
     val crew: List<ActorMovieCrew>
+)
+
+
+data class PopularActors(
+    var page: Long,
+    var results: List<PopularActor>,
+    @SerializedName("total_pages") var totalPages: Long,
+    @SerializedName("total_results") var totalResults: Long
+
+)
+
+data class PopularActor(
+
+    @SerializedName("known_for") var knownFor: List<PupularActorMovies>,
+    @SerializedName("known_for_department") var knownForDepartment: String,
+    @SerializedName("profile_path") var profilePath: String,
+    var adult: Boolean,
+    var gender: Int,
+    var id: Long,
+    var name: String,
+    var popularity: Double
+)
+
+data class PupularActorMovies(
+
+    @SerializedName("adult") var adult: Boolean,
+    @SerializedName("backdrop_path") var backdropPath: String,
+    @SerializedName("genre_ids") var genreIds: List<Int>,
+    @SerializedName("id") var id: Int,
+    @SerializedName("media_type") var mediaType: String,
+    @SerializedName("original_language") var originalLanguage: String,
+    @SerializedName("original_title") var originalTitle: String,
+    @SerializedName("overview") var overview: String,
+    @SerializedName("poster_path") var posterPath: String,
+    @SerializedName("release_date") var releaseDate: String,
+    @SerializedName("title") var title: String,
+    @SerializedName("video") var video: Boolean,
+    @SerializedName("vote_average") var voteAverage: Double,
+    @SerializedName("vote_count") var voteCount: Int
+
 )

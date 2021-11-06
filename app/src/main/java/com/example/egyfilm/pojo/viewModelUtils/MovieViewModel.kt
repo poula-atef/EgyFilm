@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import com.example.egyfilm.pojo.Constants
+import com.example.egyfilm.pojo.adapters.ActorsAdapter
 import com.example.egyfilm.pojo.classes.*
 import kotlinx.coroutines.*
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class MovieViewModel(private val context: Context) : ViewModel() {
@@ -21,6 +23,20 @@ class MovieViewModel(private val context: Context) : ViewModel() {
     val genresLiveData: LiveData<Genres>
         get() = _genresLiveData
 
+
+    private val _allPopularActorsDataLiveData =
+        MutableLiveData<Pair<ArrayList<Actor>, ArrayList<ActorFullData>>>()
+    val allPopularActorsDataLiveData: LiveData<Pair<ArrayList<Actor>, ArrayList<ActorFullData>>>
+        get() = _allPopularActorsDataLiveData
+
+
+    private val _popularActorsLiveData = MutableLiveData<PopularActors?>()
+    val popularActorsLiveData: LiveData<PopularActors?>
+        get() = _popularActorsLiveData
+
+
+    var popularActorsPagesCount : Long = 0
+    var isDataSet = false
 
     private val _genreMoviesLiveData = MutableLiveData<Movies>()
     val genreMoviesLiveData: LiveData<Movies>
@@ -218,6 +234,47 @@ class MovieViewModel(private val context: Context) : ViewModel() {
     }
 
     //endregion
+
+    //region Get Popular Actors
+
+    private fun getPopularActors(page: Int) {
+        uiScope.launch {
+            _popularActorsLiveData.value = MovieRepository.getPopularActors(page)
+        }
+    }
+
+    //endregion
+
+    //region Get Popular Actors
+
+    fun getPopularActorsData(page : Int) {
+        val actorLst = ArrayList<Actor>()
+        val actorFullDataLst = ArrayList<ActorFullData>()
+        var count = 0
+        var actorsCount = 0
+
+        getPopularActors(page)
+        popularActorsLiveData.observeForever(Observer {
+            popularActorsPagesCount = it?.totalPages!!
+            actorsCount = it.results.size
+            for (actor in it.results) {
+                getActorDetails(actor.id)
+            }
+        })
+
+        actorLiveData.observeForever(Observer {
+            actorLst.add(Actor(it))
+            actorFullDataLst.add(it)
+            count += 1
+            if (count == actorsCount) {
+                _allPopularActorsDataLiveData.value = Pair(actorLst, actorFullDataLst)
+            }
+        })
+
+    }
+
+    //endregion
+
 
     fun doneSelectingMovie() {
         _selectedMovieLiveData.value = null

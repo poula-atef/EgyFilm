@@ -17,6 +17,13 @@
             app:exitAnim="@anim/exit_to_right"
             app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_popularActorsFragment"
+            app:destination="@id/popularActorsFragment"
+            app:enterAnim="@anim/enter_from_left"
+            app:exitAnim="@anim/exit_to_right"
+            app:popEnterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_left" />
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
@@ -56,5 +63,17 @@
         <argument
             android:name="actor"
             app:argType="com.example.egyfilm.pojo.classes.ActorFullData" />
+    </fragment>
+    <fragment
+        android:id="@+id/popularActorsFragment"
+        android:name="com.example.egyfilm.ui.PopularActorsFragment"
+        android:label="PopularActorsFragment" >
+        <action
+            android:id="@+id/action_popularActorsFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment"
+            app:enterAnim="@anim/enter_from_left"
+            app:exitAnim="@anim/exit_to_right"
+            app:popEnterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_left" />
     </fragment>
 </navigation>

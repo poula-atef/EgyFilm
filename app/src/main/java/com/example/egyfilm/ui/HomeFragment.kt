@@ -38,7 +38,7 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
         binding.lifecycleOwner = this
         binding.rec.adapter = RecAdapter(this)
         binding.genreRec.adapter = GenresAdapter(this)
-        binding.searchFab.setOnClickListener{
+        binding.searchFab.setOnClickListener {
             Navigation.findNavController(it).navigate(
                 HomeFragmentDirections.actionHomeFragmentToPopularActorsFragment()
             )
@@ -60,7 +60,7 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
     }
 
     override fun onGenreItemClick(genre: Genre) {
-        Toast.makeText(requireContext(),genre.name,Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), genre.name, Toast.LENGTH_SHORT).show()
     }
 
 }

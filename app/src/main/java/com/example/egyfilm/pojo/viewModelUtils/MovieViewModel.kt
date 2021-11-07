@@ -1,5 +1,6 @@
 package com.example.egyfilm.pojo.viewModelUtils
 
+import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -15,7 +16,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class MovieViewModel(private val context: Context) : ViewModel() {
+class MovieViewModel(private var context: Context) : ViewModel() {
+
 
     //region Declarations
 
@@ -25,8 +27,8 @@ class MovieViewModel(private val context: Context) : ViewModel() {
 
 
     private val _allPopularActorsDataLiveData =
-        MutableLiveData<Pair<ArrayList<Actor>, ArrayList<ActorFullData>>>()
-    val allPopularActorsDataLiveData: LiveData<Pair<ArrayList<Actor>, ArrayList<ActorFullData>>>
+        MutableLiveData<Pair<ArrayList<Actor>, ArrayList<ActorFullData>>?>()
+    val allPopularActorsDataLiveData: LiveData<Pair<ArrayList<Actor>, ArrayList<ActorFullData>>?>
         get() = _allPopularActorsDataLiveData
 
 
@@ -35,8 +37,10 @@ class MovieViewModel(private val context: Context) : ViewModel() {
         get() = _popularActorsLiveData
 
 
-    var popularActorsPagesCount : Long = 0
+    var popularActorsPagesCount: Long = 0
     var isDataSet = false
+    private var count = 0
+
 
     private val _genreMoviesLiveData = MutableLiveData<Movies>()
     val genreMoviesLiveData: LiveData<Movies>
@@ -86,6 +90,10 @@ class MovieViewModel(private val context: Context) : ViewModel() {
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
     //endregion
+
+    init {
+        Log.d("allPopularActorsDataLiveData", "init is called!!!!")
+    }
 
     fun fetchData() {
         if (genresLiveData.value != null)
@@ -237,7 +245,7 @@ class MovieViewModel(private val context: Context) : ViewModel() {
 
     //region Get Popular Actors
 
-    private fun getPopularActors(page: Int) {
+    fun getPopularActors(page: Int) {
         uiScope.launch {
             _popularActorsLiveData.value = MovieRepository.getPopularActors(page)
         }
@@ -247,29 +255,37 @@ class MovieViewModel(private val context: Context) : ViewModel() {
 
     //region Get Popular Actors
 
-    fun getPopularActorsData(page : Int) {
+    fun getPopularActorsData(page: Int) {
         val actorLst = ArrayList<Actor>()
         val actorFullDataLst = ArrayList<ActorFullData>()
-        var count = 0
         var actorsCount = 0
+        if (!isDataSet) {
+            popularActorsLiveData.observeForever(Observer {
+                popularActorsPagesCount = it?.totalPages ?: return@Observer
+                actorsCount = it.results.size
+                getActorDetails(it.results.get(count).id)
+                Log.d("getDataFromApi", "start with index $count")
+            })
 
+            actorLiveData.observeForever(Observer {
+                actorLst.add(Actor(it ?: return@Observer))
+                actorFullDataLst.add(it)
+                count += 1
+                if (count >= actorsCount) {
+                    Log.d("getDataFromApi", "finished at index $count")
+                    count = 0
+                    _allPopularActorsDataLiveData.value = Pair(actorLst, actorFullDataLst)
+                    actorLst.clear()
+                    actorFullDataLst.clear()
+                } else {
+                    Log.d("getDataFromApi", "this is index $count")
+                    getActorDetails(
+                        popularActorsLiveData.value?.results?.get(count)?.id ?: return@Observer
+                    )
+                }
+            })
+        }
         getPopularActors(page)
-        popularActorsLiveData.observeForever(Observer {
-            popularActorsPagesCount = it?.totalPages!!
-            actorsCount = it.results.size
-            for (actor in it.results) {
-                getActorDetails(actor.id)
-            }
-        })
-
-        actorLiveData.observeForever(Observer {
-            actorLst.add(Actor(it))
-            actorFullDataLst.add(it)
-            count += 1
-            if (count == actorsCount) {
-                _allPopularActorsDataLiveData.value = Pair(actorLst, actorFullDataLst)
-            }
-        })
 
     }
 
@@ -294,11 +310,17 @@ class MovieViewModel(private val context: Context) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
+        Log.d("allPopularActorsDataLiveData", "onCleared Is Called !!!!!!")
         job.cancel()
     }
 
     fun doneSelectingActor() {
         _actorLiveData.value = null
+    }
+
+    fun donePopularActor() {
+        _popularActorsLiveData.value = null
+        doneSelectingActor()
     }
 
 }

@@ -15,14 +15,21 @@ import com.example.egyfilm.pojo.classes.Actor
 import com.example.egyfilm.pojo.viewModelUtils.MovieViewModel
 import com.example.egyfilm.pojo.viewModelUtils.MovieViewModelFactory
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.Navigation
 import com.example.egyfilm.pojo.adapters.ActorAdapter
+import com.example.egyfilm.pojo.classes.ActorFullData
 
 
-class PopularActorsFragment : Fragment(), ActorsAdapter.OnActorItemClickListener {
+class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener {
 
     private lateinit var binding: FragmentPopularActorsBinding
     private lateinit var viewModel: MovieViewModel
     private var currentPage = 1
+    private var pairList: Pair<ArrayList<Actor>, ArrayList<ActorFullData>> =
+        Pair(ArrayList<Actor>(), ArrayList<ActorFullData>())
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,29 +39,48 @@ class PopularActorsFragment : Fragment(), ActorsAdapter.OnActorItemClickListener
         val factory = MovieViewModelFactory(requireContext())
         viewModel = ViewModelProviders.of(this, factory).get(MovieViewModel::class.java)
 
-        viewModel.getPopularActorsData(currentPage)
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        //TODO BOS HNA YA SOLIMAN !!!!!
+        if (viewModel.allPopularActorsDataLiveData.value == null)
+            viewModel.getPopularActorsData(currentPage)
 
         viewModel.allPopularActorsDataLiveData.observe(this.viewLifecycleOwner, Observer {
 
-            Log.d("allPopularActorsDataLiveData", "coming Data size is ${it?.first?.size}")
-            if(binding.rec.adapter != null)
-                Log.d("allPopularActorsDataLiveData", "Data size is ${(binding.rec.adapter as ActorAdapter).itemCount} for page $currentPage")
-            val adapter = ActorAdapter(it?.first ?: return@Observer)
-            Log.d("allPopularActorsDataLiveData", "Data in adapter size is ${adapter.items.size}")
+            if (it == null)
+                return@Observer
+            pairList.first.addAll(it.first)
+            pairList.second.addAll(it.second)
+            binding.rec.adapter = null
+            val adapter = ActorAdapter(it.first.toSet(), this)
             binding.rec.adapter = adapter
-            setupActorPagesNavigation()
-        })
+            Log.d("allPopularActorsDataLiveData", "coming Data size is ${it?.first?.size}")
+            Log.d(
+                "allPopularActorsDataLiveData",
+                "coming Data distinct size is ${it?.first?.distinct()!!.size}"
+            )
+            Log.d(
+                "allPopularActorsDataLiveData",
+                "coming Data distinct function size is ${distinct(it?.first!!).size}"
+            )
+            Log.d(
+                "allPopularActorsDataLiveData",
+                "coming Data set size is ${it?.first?.toSet()!!.size}"
+            )
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            setupActorPagesNavigation()
+            viewModel.donePopularActor()
+        })
 
         return binding.root
     }
 
+
+    fun distinct(lst: List<Actor>): ArrayList<Actor> {
+        val arr = ArrayList<Actor>()
+        for (actor in lst) {
+            if (!arr.contains(actor))
+                arr.add(actor)
+        }
+        return arr
+    }
 
     private fun setupActorPagesNavigation() {
         if (!viewModel.isDataSet) {
@@ -113,6 +139,20 @@ class PopularActorsFragment : Fragment(), ActorsAdapter.OnActorItemClickListener
 
 
     override fun onActorItemClick(actor: Actor) {
+        val actorFullData = pairList.let {
+            it.second[it.first.indexOf(actor)]
+        }
+        Log.d(
+            "allPopularActorsDataLiveData",
+            "allPopularActorsDataLiveData value is ${viewModel.allPopularActorsDataLiveData.value}"
+        )
+        Navigation.findNavController(binding.root)
+            .navigate(
+                PopularActorsFragmentDirections.actionPopularActorsFragmentToUserDetailsFragment(
+                    actorFullData
+                )
+            )
+        viewModel.doneSelectingActor()
     }
 }
 

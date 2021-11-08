@@ -27,6 +27,17 @@
             android:layout_marginBottom="@dimen/_5sdp"
             tools:listitem="@layout/actor_item" />
 
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="@dimen/fab_size"
+            android:layout_height="@dimen/fab_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            />
+
 
         <ImageView
             android:id="@+id/back_arrow"

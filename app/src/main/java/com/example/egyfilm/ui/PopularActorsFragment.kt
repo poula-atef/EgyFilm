@@ -20,13 +20,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.Navigation
 import com.example.egyfilm.pojo.adapters.ActorAdapter
 import com.example.egyfilm.pojo.classes.ActorFullData
+import com.example.egyfilm.pojo.viewModelUtils.PopularActorsViewModel
 
 
 class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener {
 
     private lateinit var binding: FragmentPopularActorsBinding
     private lateinit var viewModel: MovieViewModel
-    private var currentPage = 1
     private var pairList: Pair<ArrayList<Actor>, ArrayList<ActorFullData>> =
         Pair(ArrayList<Actor>(), ArrayList<ActorFullData>())
 
@@ -39,8 +39,9 @@ class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener 
         val factory = MovieViewModelFactory(requireContext())
         viewModel = ViewModelProviders.of(this, factory).get(MovieViewModel::class.java)
 
-        if (viewModel.allPopularActorsDataLiveData.value == null)
-            viewModel.getPopularActorsData(currentPage)
+        if (viewModel.allPopularActorsDataLiveData.value == null) {
+            viewModel.getPopularActorsData(viewModel.currentPage)
+        }
 
         viewModel.allPopularActorsDataLiveData.observe(this.viewLifecycleOwner, Observer {
 
@@ -48,7 +49,7 @@ class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener 
                 return@Observer
             pairList.first.addAll(it.first)
             pairList.second.addAll(it.second)
-            binding.rec.adapter = null
+            binding.loading.visibility = View.GONE
             val adapter = ActorAdapter(it.first.toSet(), this)
             binding.rec.adapter = adapter
             Log.d("allPopularActorsDataLiveData", "coming Data size is ${it?.first?.size}")
@@ -68,6 +69,7 @@ class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener 
             setupActorPagesNavigation()
             viewModel.donePopularActor()
         })
+        setSpinnerItems()
 
         return binding.root
     }
@@ -83,20 +85,18 @@ class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener 
     }
 
     private fun setupActorPagesNavigation() {
-        if (!viewModel.isDataSet) {
-            viewModel.isDataSet = true
-            setSpinnerItems()
-            setArrowsButtonsClickListener()
-            setOnSpinnerItemChangedListener()
-        }
+        setArrowsButtonsClickListener()
+        setOnSpinnerItemChangedListener()
     }
 
     private fun setOnSpinnerItemChangedListener() {
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pageNumber: Int, p3: Long) {
-                if (currentPage != pageNumber + 1) {
-                    currentPage = pageNumber + 1
-                    viewModel.getPopularActorsData(currentPage)
+                if (viewModel.currentPage != pageNumber + 1) {
+                    binding.rec.adapter = null
+                    binding.loading.visibility = View.VISIBLE
+                    viewModel.currentPage = pageNumber + 1
+                    viewModel.getPopularActorsData(viewModel.currentPage)
                 }
             }
 
@@ -107,16 +107,29 @@ class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener 
     }
 
     private fun setSpinnerItems() {
-        val spinnerAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_spinner_item
-        )
 
-        for (i in 1..viewModel.popularActorsPagesCount) {
-            spinnerAdapter.add(i.toString())
-        }
+        viewModel.popularActorsPagesCount.observe(viewLifecycleOwner, Observer {
 
-        binding.spinner.adapter = spinnerAdapter
+            if (it == null)
+                return@Observer
+
+            val spinnerAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                requireContext(),
+                android.R.layout.simple_spinner_item
+            )
+
+            for (i in 1..it) {
+                spinnerAdapter.add(i.toString())
+            }
+
+            binding.spinner.adapter = spinnerAdapter
+            if (viewModel.currentPage > 0)
+                binding.spinner.setSelection(viewModel.currentPage - 1)
+
+
+        })
+
+
     }
 
     private fun setArrowsButtonsClickListener() {
@@ -152,7 +165,6 @@ class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener 
                     actorFullData
                 )
             )
-        viewModel.doneSelectingActor()
     }
 }
 

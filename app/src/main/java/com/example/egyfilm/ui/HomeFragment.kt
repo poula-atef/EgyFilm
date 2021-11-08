@@ -38,7 +38,7 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
         binding.lifecycleOwner = this
         binding.rec.adapter = RecAdapter(this)
         binding.genreRec.adapter = GenresAdapter(this)
-        binding.searchFab.setOnClickListener {
+        binding.actorFab.setOnClickListener {
             Navigation.findNavController(it).navigate(
                 HomeFragmentDirections.actionHomeFragmentToPopularActorsFragment()
             )

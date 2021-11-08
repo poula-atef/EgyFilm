@@ -37,9 +37,14 @@ class MovieViewModel(private var context: Context) : ViewModel() {
         get() = _popularActorsLiveData
 
 
-    var popularActorsPagesCount: Long = 0
-    var isDataSet = false
+    private val _popularActorsPagesCount = MutableLiveData<Long?>()
+    val popularActorsPagesCount: LiveData<Long?>
+        get() = _popularActorsPagesCount
+
+
+    private var isDataSet = false
     private var count = 0
+    var currentPage = 1
 
 
     private val _genreMoviesLiveData = MutableLiveData<Movies>()
@@ -256,13 +261,17 @@ class MovieViewModel(private var context: Context) : ViewModel() {
     //region Get Popular Actors
 
     fun getPopularActorsData(page: Int) {
-        val actorLst = ArrayList<Actor>()
-        val actorFullDataLst = ArrayList<ActorFullData>()
+        var actorLst = ArrayList<Actor>()
+        var actorFullDataLst = ArrayList<ActorFullData>()
         var actorsCount = 0
         if (!isDataSet) {
+            isDataSet = true
             popularActorsLiveData.observeForever(Observer {
-                popularActorsPagesCount = it?.totalPages ?: return@Observer
-                actorsCount = it.results.size
+                actorLst = ArrayList<Actor>()
+                actorFullDataLst = ArrayList<ActorFullData>()
+                actorsCount = it?.results?.size ?: return@Observer
+                if (_popularActorsPagesCount.value == null)
+                    _popularActorsPagesCount.value = it.totalPages
                 getActorDetails(it.results.get(count).id)
                 Log.d("getDataFromApi", "start with index $count")
             })
@@ -275,8 +284,6 @@ class MovieViewModel(private var context: Context) : ViewModel() {
                     Log.d("getDataFromApi", "finished at index $count")
                     count = 0
                     _allPopularActorsDataLiveData.value = Pair(actorLst, actorFullDataLst)
-                    actorLst.clear()
-                    actorFullDataLst.clear()
                 } else {
                     Log.d("getDataFromApi", "this is index $count")
                     getActorDetails(

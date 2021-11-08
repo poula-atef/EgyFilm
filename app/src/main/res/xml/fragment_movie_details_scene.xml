@@ -14,6 +14,7 @@
     </Transition>
 
     <Transition
+        android:id="@+id/play_transition"
         motion:constraintSetEnd="@+id/end1"
         motion:constraintSetStart="@id/start"
         motion:duration="1000">

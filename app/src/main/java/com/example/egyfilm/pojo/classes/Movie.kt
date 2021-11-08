@@ -50,3 +50,11 @@ data class Movie(
                 movie.video
             )
 }
+
+
+data class MovieSearch(
+    @SerializedName("total_pages") var totalPages : Long,
+    @SerializedName("total_results") var totalResults : Int,
+    var page : Int,
+    var results : List<Movie>
+)

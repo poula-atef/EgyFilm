@@ -1,6 +1,7 @@
 package com.example.egyfilm.ui
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import com.example.egyfilm.R
 import com.example.egyfilm.databinding.FragmentMovieDetailsBinding
 import com.example.egyfilm.pojo.Constants
 import com.example.egyfilm.pojo.adapters.ActorsAdapter
@@ -19,6 +21,7 @@ import com.example.egyfilm.pojo.adapters.MoviesAdapter
 import com.example.egyfilm.pojo.classes.*
 import com.example.egyfilm.pojo.viewModelUtils.MovieViewModel
 import com.example.egyfilm.pojo.viewModelUtils.MovieViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 
@@ -50,14 +53,20 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
 
         viewModel.movieTrailerLiveData.observe(this.viewLifecycleOwner, Observer {
             movieTrailer = it.results.get(0)
-            Log.d("trailer", movieTrailer.toString())
-            if (movieTrailer == null)
-                binding.floatingActionButton.visibility = View.INVISIBLE
         })
 
 
         binding.floatingActionButton.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
+            if (movieTrailer == null) {
+                Handler().postDelayed(Runnable {
+                    Snackbar.make(
+                        requireView(),
+                        "There Is No Trailer For This Movie !!",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    binding.motionLayout.transitionToState(R.id.start)
+                }, 1010)
+            } else if (event.action == MotionEvent.ACTION_UP) {
                 when (binding.youTubePlayerView.visibility) {
                     View.INVISIBLE -> startVideoTrailer()
                     else -> binding.youTubePlayerView.release()
@@ -75,6 +84,8 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
         binding.youTubePlayerView.addYouTubePlayerListener(object :
             AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
+                if (movieTrailer == null)
+                    return
                 youTubePlayer.loadVideo(movieTrailer?.key!!, 0f)
                 youTubePlayer.play()
             }

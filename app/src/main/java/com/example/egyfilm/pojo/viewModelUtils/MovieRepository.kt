@@ -398,13 +398,31 @@ object MovieRepository {
             try {
                 result = response.await()
             } catch (t: Throwable) {
-                
+
             }
             result
         }
     }
 
     //endregion
+
+
+    suspend fun getSearchMovies(name: String, page: Int): MovieSearch? {
+        return withContext(Dispatchers.IO) {
+            val response = movieApi.searchForMovie(
+                Constants.API_KEY,
+                name,
+                page
+            )
+            var res: MovieSearch? = null
+            try {
+                res = response.await()
+            } catch (T: Throwable) {
+
+            }
+            res
+        }
+    }
 
 
     //region save images and get it to and from room

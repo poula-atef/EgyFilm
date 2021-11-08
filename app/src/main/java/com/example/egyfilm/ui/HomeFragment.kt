@@ -43,6 +43,11 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
                 HomeFragmentDirections.actionHomeFragmentToPopularActorsFragment()
             )
         }
+        binding.searchFab.setOnClickListener {
+            Navigation.findNavController(it).navigate(
+                HomeFragmentDirections.actionHomeFragmentToSearchFragment()
+            )
+        }
         return binding.root
     }
 

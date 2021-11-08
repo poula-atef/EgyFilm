@@ -87,6 +87,15 @@ interface Api {
         @Query("page") page: Int,
         @Query("language") language: String,
         @Query("api_key") apiKey: String
-    ):Deferred<PopularActors>
+    ): Deferred<PopularActors>
+
+
+    //Search For Movie
+    @GET("search/movie")
+    fun searchForMovie(
+        @Query("api_key") apiKey: String,
+        @Query("query") name: String,
+        @Query("page") page: Int
+    ): Deferred<MovieSearch>
 
 }

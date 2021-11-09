@@ -23,7 +23,7 @@ import com.example.egyfilm.pojo.classes.Movie
 
 
 class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
-    GenresAdapter.OnGenreItemClickListener {
+    GenresAdapter.OnGenreItemClickListener, RecAdapter.OnMovieRecyclerViewItemClickListener {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: MovieViewModel
     override fun onCreateView(
@@ -36,7 +36,7 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
         viewModel.fetchData()
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        binding.rec.adapter = RecAdapter(this)
+        binding.rec.adapter = RecAdapter(this, this)
         binding.genreRec.adapter = GenresAdapter(this)
         binding.actorFab.setOnClickListener {
             Navigation.findNavController(it).navigate(
@@ -51,7 +51,7 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
         return binding.root
     }
 
-    override fun onMovieItemClick(movie: Movie, view: View) {
+    override fun onMovieItemClick(movie: Movie) {
         viewModel.getMovieFullDetail(movie.id!!)
         viewModel.selectedMovieLiveData.observe(this.viewLifecycleOwner, Observer {
             Navigation.findNavController(binding.root)
@@ -65,7 +65,28 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
     }
 
     override fun onGenreItemClick(genre: Genre) {
-        Toast.makeText(requireContext(), genre.name, Toast.LENGTH_SHORT).show()
+        //Toast.makeText(requireContext(), genre.name, Toast.LENGTH_SHORT).show()
+        Navigation.findNavController(binding.root).navigate(
+            HomeFragmentDirections.actionHomeFragmentToGenreFragment(
+                genre
+            )
+        )
+    }
+
+    override fun onClick(name: String) {
+//        Toast.makeText(requireContext(), name + " see more !!", Toast.LENGTH_SHORT).show()
+        var gen: Genre? = null
+        for (genre in viewModel.genresLiveData.value?.genres!!) {
+            if (genre.name.equals(name))
+                gen = genre
+        }
+        if (gen == null)
+            gen = Genre(-1, name)
+        Navigation.findNavController(binding.root).navigate(
+            HomeFragmentDirections.actionHomeFragmentToGenreFragment(
+                gen
+            )
+        )
     }
 
 }

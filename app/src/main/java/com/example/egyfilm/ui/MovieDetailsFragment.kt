@@ -93,7 +93,7 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
     }
 
 
-    override fun onMovieItemClick(movie: Movie, view: View) {
+    override fun onMovieItemClick(movie: Movie) {
         viewModel.getMovieFullDetail(movie.id!!)
         viewModel.selectedMovieLiveData.observe(this.viewLifecycleOwner, Observer {
             Navigation.findNavController(binding.root)
@@ -125,7 +125,12 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
     }
 
     override fun onGenreItemClick(genre: Genre) {
-        Toast.makeText(requireContext(), genre.name, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(requireContext(), genre.name, Toast.LENGTH_SHORT).show()
+        Navigation.findNavController(binding.root).navigate(
+            MovieDetailsFragmentDirections.actionMovieDetailsFragmentToGenreFragment(
+                genre
+            )
+        )
     }
 
 }

@@ -36,7 +36,7 @@ class UserDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
         return binding.root
     }
 
-    override fun onMovieItemClick(movie: Movie, view: View) {
+    override fun onMovieItemClick(movie: Movie) {
         viewModel.getMovieFullDetail(movie.id!!)
         viewModel.selectedMovieLiveData.observe(this.viewLifecycleOwner, Observer {
             Navigation.findNavController(binding.root)

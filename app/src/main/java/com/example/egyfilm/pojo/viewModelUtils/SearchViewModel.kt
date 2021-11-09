@@ -1,4 +1,4 @@
-package com.example.egyfilm.ui
+package com.example.egyfilm.pojo.viewModelUtils
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

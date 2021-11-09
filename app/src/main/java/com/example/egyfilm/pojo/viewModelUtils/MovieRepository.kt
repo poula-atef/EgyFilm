@@ -91,7 +91,7 @@ object MovieRepository {
 
     }
 
-    private suspend fun getGenreMoviesSuspend(genre: Genre, page: Int): Movies? {
+    suspend fun getGenreMoviesSuspend(genre: Genre, page: Int): Movies? {
         return withContext(Dispatchers.IO) {
             val response = movieApi.getGenreMovies(Constants.API_KEY, genre.id, page)
             var result: Movies? = null
@@ -99,6 +99,7 @@ object MovieRepository {
                 if (isConnected) {
                     result = response.await()
                     if (result.results?.isNotEmpty() == true) {
+                        clearGenreMoviesFromDatabase(genre.name)
                         addGenreMoviesToDatabase(result, genre.name)
                     }
                 } else
@@ -112,6 +113,10 @@ object MovieRepository {
             }
             result
         }
+    }
+
+    private fun clearGenreMoviesFromDatabase(name: String) {
+        daoInstance.deleteGenresName(name)
     }
 
     private fun addGenreMoviesToDatabase(result: Movies, genre: String) {
@@ -145,7 +150,7 @@ object MovieRepository {
 
     }
 
-    private suspend fun getSpecialGenreMoviesSuspend(
+    suspend fun getSpecialGenreMoviesSuspend(
         genre: String,
         page: Int
     ): Movies? {
@@ -160,8 +165,10 @@ object MovieRepository {
             try {
                 if (isConnected) {
                     result = response.await()
-                    if (result.results?.isNotEmpty() == true)
+                    if (result.results?.isNotEmpty() == true) {
+                        clearGenreMoviesFromDatabase(genre)
                         addGenreMoviesToDatabase(result, genre)
+                    }
                 } else
                     result = Movies()
                 result.results = getGenreMoviesFromDatabase(genre)

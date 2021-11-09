@@ -31,6 +31,13 @@
             app:exitAnim="@anim/exit_to_right"
             app:popEnterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_left" />
+        <action
+            android:id="@+id/action_homeFragment_to_genreFragment"
+            app:destination="@id/genreFragment"
+            app:enterAnim="@anim/enter_from_left"
+            app:exitAnim="@anim/exit_to_right"
+            app:popEnterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_left" />
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
@@ -50,6 +57,13 @@
         <action
             android:id="@+id/action_movieDetailsFragment_to_userDetailsFragment"
             app:destination="@id/userDetailsFragment"
+            app:enterAnim="@anim/enter_from_left"
+            app:exitAnim="@anim/exit_to_right"
+            app:popEnterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_left" />
+        <action
+            android:id="@+id/action_movieDetailsFragment_to_genreFragment"
+            app:destination="@id/genreFragment"
             app:enterAnim="@anim/enter_from_left"
             app:exitAnim="@anim/exit_to_right"
             app:popEnterAnim="@anim/enter_from_right"
@@ -90,6 +104,21 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/enter_from_left"
+            app:exitAnim="@anim/exit_to_right"
+            app:popEnterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/genreFragment"
+        android:name="com.example.egyfilm.ui.GenreFragment"
+        android:label="GenreFragment" >
+        <argument
+            android:name="genre"
+            app:argType="com.example.egyfilm.pojo.classes.Genre" />
+        <action
+            android:id="@+id/action_genreFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment"
             app:enterAnim="@anim/enter_from_left"
             app:exitAnim="@anim/exit_to_right"

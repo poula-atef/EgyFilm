@@ -11,19 +11,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/App_back_color"
-        tools:context=".ui.PopularActorsFragment">
+        tools:context=".ui.GenreFragment">
 
+        <TextView
+            android:id="@+id/genre_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/allerta_stencil"
+            android:text="upcoming movies"
+            android:textColor="@color/text_color_1"
+            android:textSize="@dimen/_22sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rec"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/genre_title"
             app:spanCount="2"
             tools:listitem="@layout/actor_item" />
 
@@ -73,6 +85,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/back_arrow"
             app:layout_constraintTop_toTopOf="@+id/back_arrow" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

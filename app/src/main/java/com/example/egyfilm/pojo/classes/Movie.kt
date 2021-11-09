@@ -8,7 +8,12 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
-data class Movies(val page: Int? = null, var results: List<Movie>? = null)
+data class Movies(
+    val page: Int? = null,
+    var results: List<Movie>? = null,
+    @SerializedName("total_pages") var totalPages: Long? = null,
+    @SerializedName("total_results") var totalResults: Long? = null
+)
 
 @Parcelize
 @Entity(tableName = "movie")
@@ -53,8 +58,8 @@ data class Movie(
 
 
 data class MovieSearch(
-    @SerializedName("total_pages") var totalPages : Long,
-    @SerializedName("total_results") var totalResults : Int,
-    var page : Int,
-    var results : List<Movie>
+    @SerializedName("total_pages") var totalPages: Long,
+    @SerializedName("total_results") var totalResults: Int,
+    var page: Int,
+    var results: List<Movie>
 )

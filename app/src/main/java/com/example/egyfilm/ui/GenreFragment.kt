@@ -1,74 +1,58 @@
 package com.example.egyfilm.ui
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.example.egyfilm.databinding.FragmentPopularActorsBinding
-import com.example.egyfilm.pojo.adapters.ActorsAdapter
-import com.example.egyfilm.pojo.classes.Actor
-import com.example.egyfilm.pojo.viewModelUtils.MovieViewModel
-import com.example.egyfilm.pojo.viewModelUtils.MovieViewModelFactory
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import com.example.egyfilm.databinding.FragmentGenreBinding
 import com.example.egyfilm.pojo.adapters.ActorAdapter
-import com.example.egyfilm.pojo.classes.ActorFullData
-import com.example.egyfilm.pojo.viewModelUtils.PopularActorsViewModel
+import com.example.egyfilm.pojo.adapters.MoviesAdapter
+import com.example.egyfilm.pojo.classes.Movie
+import com.example.egyfilm.pojo.viewModelUtils.GenrePageViewModel
 
 
-class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener {
+class GenreFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
 
-    private lateinit var binding: FragmentPopularActorsBinding
-    private lateinit var viewModel: MovieViewModel
-    private var pairList: Pair<ArrayList<Actor>, ArrayList<ActorFullData>> =
-        Pair(ArrayList<Actor>(), ArrayList<ActorFullData>())
+    private lateinit var binding: FragmentGenreBinding
+    private lateinit var viewModel: GenrePageViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPopularActorsBinding.inflate(inflater, container, false)
+        binding = FragmentGenreBinding.inflate(inflater, container, false)
 
-        val factory = MovieViewModelFactory(requireContext())
-        viewModel = ViewModelProviders.of(this, factory).get(MovieViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(GenrePageViewModel::class.java)
 
-        if (viewModel.allPopularActorsDataLiveData.value == null) {
-            viewModel.getPopularActorsData(viewModel.currentPage)
-        }
+        viewModel.genre = GenreFragmentArgs.fromBundle(requireArguments()).genre
 
-        viewModel.allPopularActorsDataLiveData.observe(this.viewLifecycleOwner, Observer {
+        binding.genreTitle.text = viewModel.genre!!.name.replace('_',' ').capitalize() + " Movies"
+
+        if (viewModel.genresLiveData.value == null)
+            viewModel.getGenreMovies()
+
+        viewModel.genresLiveData.observe(viewLifecycleOwner, Observer {
 
             if (it == null)
                 return@Observer
-            pairList.first.addAll(it.first)
-            pairList.second.addAll(it.second)
             binding.loading.visibility = View.GONE
-            val adapter = ActorAdapter(it.first.toSet(), this)
+            val adapter = MoviesAdapter(this)
+            adapter.submitList(it.results!!)
             binding.rec.adapter = adapter
 
             setupActorPagesNavigation()
-            viewModel.donePopularActor()
         })
+
         setSpinnerItems()
 
         return binding.root
-    }
-
-
-    fun distinct(lst: List<Actor>): ArrayList<Actor> {
-        val arr = ArrayList<Actor>()
-        for (actor in lst) {
-            if (!arr.contains(actor))
-                arr.add(actor)
-        }
-        return arr
     }
 
     private fun setupActorPagesNavigation() {
@@ -83,7 +67,7 @@ class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener 
                     binding.rec.adapter = null
                     binding.loading.visibility = View.VISIBLE
                     viewModel.currentPage = pageNumber + 1
-                    viewModel.getPopularActorsData(viewModel.currentPage)
+                    viewModel.getGenreMovies()
                 }
             }
 
@@ -95,7 +79,7 @@ class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener 
 
     private fun setSpinnerItems() {
 
-        viewModel.popularActorsPagesCount.observe(viewLifecycleOwner, Observer {
+        viewModel.genresLiveData.observe(viewLifecycleOwner, Observer {
 
             if (it == null)
                 return@Observer
@@ -105,14 +89,13 @@ class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener 
                 android.R.layout.simple_spinner_item
             )
 
-            for (i in 1..it) {
+            for (i in 1..it.totalPages!!) {
                 spinnerAdapter.add(i.toString())
             }
 
             binding.spinner.adapter = spinnerAdapter
             if (viewModel.currentPage > 0)
                 binding.spinner.setSelection(viewModel.currentPage - 1)
-
 
         })
 
@@ -137,21 +120,18 @@ class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener 
 
     }
 
-
-    override fun onActorItemClick(actor: Actor) {
-        val actorFullData = pairList.let {
-            it.second[it.first.indexOf(actor)]
-        }
-        Log.d(
-            "allPopularActorsDataLiveData",
-            "allPopularActorsDataLiveData value is ${viewModel.allPopularActorsDataLiveData.value}"
-        )
-        Navigation.findNavController(binding.root)
-            .navigate(
-                PopularActorsFragmentDirections.actionPopularActorsFragmentToUserDetailsFragment(
-                    actorFullData
+    override fun onMovieItemClick(movie: Movie) {
+        viewModel.getMovieFullDetail(movie.id!!)
+        viewModel.selectedMovieLiveData.observe(this.viewLifecycleOwner, Observer {
+            Navigation.findNavController(binding.root)
+                .navigate(
+                    GenreFragmentDirections.actionGenreFragmentToMovieDetailsFragment(
+                        it ?: return@Observer
+                    )
                 )
-            )
+            viewModel.doneSelectingMovie()
+        })
     }
-}
 
+
+}

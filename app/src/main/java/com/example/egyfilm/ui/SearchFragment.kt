@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,6 +16,7 @@ import androidx.navigation.Navigation
 import com.example.egyfilm.databinding.FragmentSearchBinding
 import com.example.egyfilm.pojo.adapters.MoviesAdapter
 import com.example.egyfilm.pojo.classes.Movie
+import com.example.egyfilm.pojo.viewModelUtils.SearchViewModel
 
 class SearchFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
 
@@ -147,7 +147,7 @@ class SearchFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
         binding.backArrow.visibility = vis
     }
 
-    override fun onMovieItemClick(movie: Movie, view: View) {
+    override fun onMovieItemClick(movie: Movie) {
         viewModel.getMovieFullDetail(movie.id!!)
         viewModel.selectedMovieLiveData.observe(this.viewLifecycleOwner, Observer {
             Navigation.findNavController(binding.root)

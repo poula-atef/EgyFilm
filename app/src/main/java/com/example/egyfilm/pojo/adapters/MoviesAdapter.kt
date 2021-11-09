@@ -60,7 +60,7 @@ class MoviesAdapter(private val listener: OnMovieItemClickListener) :
         }
 
         override fun onClick(p0: View?) {
-            listener.onMovieItemClick(movie, itemView)
+            listener.onMovieItemClick(movie)
         }
     }
 
@@ -94,7 +94,7 @@ class MoviesAdapter(private val listener: OnMovieItemClickListener) :
         }
 
         override fun onClick(p0: View?) {
-            listener.onMovieItemClick(movie, itemView)
+            listener.onMovieItemClick(movie)
         }
     }
 
@@ -112,7 +112,7 @@ class MoviesAdapter(private val listener: OnMovieItemClickListener) :
 
 
     interface OnMovieItemClickListener {
-        fun onMovieItemClick(movie: Movie, view: View)
+        fun onMovieItemClick(movie: Movie)
     }
 
 }

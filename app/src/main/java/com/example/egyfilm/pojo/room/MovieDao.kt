@@ -32,7 +32,6 @@ interface MovieDao {
     fun getMovieTrailer(id: Long): MovieTrailer
 
 
-
     @Insert
     fun insertActorMovie(movie: ActorMovies)
 
@@ -58,8 +57,6 @@ interface MovieDao {
     fun insertMovieTrailer(movieTrailer: MovieTrailer)
 
 
-
-
     @Query("delete from actor_movies where id =:id")
     fun deleteActorMovies(id: Long)
 
@@ -71,6 +68,9 @@ interface MovieDao {
 
     @Query("delete from genre")
     fun deleteGenres()
+
+    @Query("delete from movie where category =:genreName")
+    fun deleteGenresName(genreName: String)
 
     @Query("delete from movie_full_data where id =:id")
     fun deleteMovieFullData(id: Long)

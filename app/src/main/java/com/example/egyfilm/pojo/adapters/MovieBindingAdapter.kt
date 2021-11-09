@@ -63,14 +63,22 @@ fun RecyclerView.itemsMap(
 
 @BindingAdapter("setRecyclerViewTitle")
 fun TextView.setRecyclerViewTitle(recName: String?) {
-    text = recName
+    text = recName?.replace('_', ' ')?.capitalize()
+    contentDescription = recName
 }
 
 
 @BindingAdapter("setMainRecyclerViewItems")
 fun RecyclerView.setMainRecyclerViewItems(items: HashMap<String, Movies>?) {
     val lst = items?.toList()
-    (adapter as RecAdapter).submitList(lst)
+    val mLst = ArrayList<Pair<String, Movies>>()
+    lst?.forEach {
+        when (it.first) {
+            "upcoming", "popular", "top_rated" -> mLst.add(0, it)
+            else -> mLst.add(it)
+        }
+    }
+    (adapter as RecAdapter).submitList(mLst)
 }
 
 

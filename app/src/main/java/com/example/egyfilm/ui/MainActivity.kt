@@ -1,17 +1,11 @@
 package com.example.egyfilm.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
 import com.example.egyfilm.R
-import com.example.egyfilm.pojo.Constants
-import com.example.egyfilm.pojo.viewModelUtils.MovieViewModel
-import com.example.egyfilm.pojo.classes.MovieRelative
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewModel: MovieViewModel
+//    private lateinit var viewModel: MovieViewModel
 
     //    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,77 +22,77 @@ class MainActivity : AppCompatActivity() {
 //        getActorMovies(933238)
 
     }
-
-    private fun getActorMovies(id: Long) {
-        viewModel.getActorMovies(id)
-        viewModel.actorMoviesLiveData.observe(this, Observer {
-            Log.d("MainActivity", it.toString())
-        })
-    }
-
-    private fun getActorDetails(id: Long) {
-        viewModel.getActorDetails(id)
-        viewModel.actorLiveData.observe(this, Observer {
-            Log.d("MainActivity", it.toString())
-        })
-    }
-
-    private fun getMovieActors(id: Long) {
-        viewModel.getMovieActors(id)
-        viewModel.movieActorsLiveData.observe(this, Observer {
-            Log.d("MainActivity", it.toString())
-        })
-    }
-
-
-    private fun getMovieRelatives(id: Long, page: Int, relationship: String) {
-        if (relationship.equals(Constants.SIMILAR))
-            askAndObserveFor(id, page, relationship, viewModel.movieSimilarsLiveData)
-        else
-            askAndObserveFor(id, page, relationship, viewModel.movieRecommendationsLiveData)
-    }
-
-    private fun askAndObserveFor(
-        id: Long,
-        page: Int,
-        relationship: String,
-        liveData: LiveData<MovieRelative>
-    ) {
-        viewModel.getMovieRelatives(id, page, relationship)
-        liveData.observe(this, Observer {
-            Log.d("MainActivity", it.toString())
-        })
-
-    }
-
-    private fun getMovieFullData(id: Long) {
-        viewModel.getMovieFullDetail(id)
-//        binding.viewModel = viewModel
-//        binding.lifecycleOwner = this
-/*        viewModel.selectedMovieLiveData.observe(this, Observer {
-            Log.d("MainActivity", it.toString())
-            bining.movieDetails = it
-            binding.rating.text = "IMDB ${it.voteAverage}"
-        })*/
-    }
-
-    private fun getAllFrontMovies() {
-
-        viewModel.getGenres(this)
-
-        viewModel.genresLiveData.observe(this, Observer {
-            for (genre in it.genres!!) {
-                viewModel.getGenreMovies(genre, 1)
-            }
-            viewModel.getSpecialGenreMovies(1)
-        })
-
-/*        viewModel.genresDataCompleted.observe(this, Observer {
-            for (movies in viewModel.genresMap)
-                Log.d("ViewModel", "${movies.key} -----> ${movies.value.results.toString()}")
-        })*/
-
-    }
+//
+//    private fun getActorMovies(id: Long) {
+//        viewModel.getActorMovies(id)
+//        viewModel.actorMoviesLiveData.observe(this, Observer {
+//            Log.d("MainActivity", it.toString())
+//        })
+//    }
+//
+//    private fun getActorDetails(id: Long) {
+//        viewModel.getActorDetails(id)
+//        viewModel.actorLiveData.observe(this, Observer {
+//            Log.d("MainActivity", it.toString())
+//        })
+//    }
+//
+//    private fun getMovieActors(id: Long) {
+//        viewModel.getMovieActors(id)
+//        viewModel.movieActorsLiveData.observe(this, Observer {
+//            Log.d("MainActivity", it.toString())
+//        })
+//    }
+//
+//
+//    private fun getMovieRelatives(id: Long, page: Int, relationship: String) {
+//        if (relationship.equals(Constants.SIMILAR))
+//            askAndObserveFor(id, page, relationship, viewModel.movieSimilarsLiveData)
+//        else
+//            askAndObserveFor(id, page, relationship, viewModel.movieRecommendationsLiveData)
+//    }
+//
+//    private fun askAndObserveFor(
+//        id: Long,
+//        page: Int,
+//        relationship: String,
+//        liveData: LiveData<MovieRelative>
+//    ) {
+//        viewModel.getMovieRelatives(id, page, relationship)
+//        liveData.observe(this, Observer {
+//            Log.d("MainActivity", it.toString())
+//        })
+//
+//    }
+//
+//    private fun getMovieFullData(id: Long) {
+//        viewModel.getMovieFullDetail(id)
+////        binding.viewModel = viewModel
+////        binding.lifecycleOwner = this
+///*        viewModel.selectedMovieLiveData.observe(this, Observer {
+//            Log.d("MainActivity", it.toString())
+//            bining.movieDetails = it
+//            binding.rating.text = "IMDB ${it.voteAverage}"
+//        })*/
+//    }
+//
+//    private fun getAllFrontMovies() {
+//
+//        viewModel.getGenres(this)
+//
+//        viewModel.genresLiveData.observe(this, Observer {
+//            for (genre in it.genres!!) {
+//                viewModel.getGenreMovies(genre, 1)
+//            }
+//            viewModel.getSpecialGenreMovies(1)
+//        })
+//
+///*        viewModel.genresDataCompleted.observe(this, Observer {
+//            for (movies in viewModel.genresMap)
+//                Log.d("ViewModel", "${movies.key} -----> ${movies.value.results.toString()}")
+//        })*/
+//
+//    }
 
 
 }

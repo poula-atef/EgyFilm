@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -12,13 +11,12 @@ import androidx.navigation.Navigation
 import com.example.egyfilm.databinding.FragmentUserDetailsBinding
 import com.example.egyfilm.pojo.adapters.MoviesAdapter
 import com.example.egyfilm.pojo.classes.Movie
-import com.example.egyfilm.pojo.viewModelUtils.MovieViewModel
-import com.example.egyfilm.pojo.viewModelUtils.MovieViewModelFactory
+import com.example.egyfilm.pojo.viewModelUtils.UserDetailsViewModel
 
 class UserDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
 
     private lateinit var binding: FragmentUserDetailsBinding
-    private lateinit var viewModel: MovieViewModel
+    private lateinit var viewModel: UserDetailsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,8 +24,7 @@ class UserDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
     ): View {
         binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
         val actor = UserDetailsFragmentArgs.fromBundle(requireArguments()).actor
-        val factory = MovieViewModelFactory(requireContext())
-        viewModel = ViewModelProviders.of(this, factory).get(MovieViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(UserDetailsViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         binding.actorRec.adapter = MoviesAdapter(this)

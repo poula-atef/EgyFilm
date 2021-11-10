@@ -10,13 +10,8 @@ import android.widget.AdapterView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.egyfilm.databinding.FragmentPopularActorsBinding
-import com.example.egyfilm.pojo.adapters.ActorsAdapter
 import com.example.egyfilm.pojo.classes.Actor
-import com.example.egyfilm.pojo.viewModelUtils.MovieViewModel
-import com.example.egyfilm.pojo.viewModelUtils.MovieViewModelFactory
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.Navigation
 import com.example.egyfilm.pojo.adapters.ActorAdapter
 import com.example.egyfilm.pojo.classes.ActorFullData
@@ -26,7 +21,7 @@ import com.example.egyfilm.pojo.viewModelUtils.PopularActorsViewModel
 class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener {
 
     private lateinit var binding: FragmentPopularActorsBinding
-    private lateinit var viewModel: MovieViewModel
+    private lateinit var viewModel: PopularActorsViewModel
     private var pairList: Pair<ArrayList<Actor>, ArrayList<ActorFullData>> =
         Pair(ArrayList<Actor>(), ArrayList<ActorFullData>())
 
@@ -36,8 +31,7 @@ class PopularActorsFragment : Fragment(), ActorAdapter.OnActorItemClickListener 
     ): View {
         binding = FragmentPopularActorsBinding.inflate(inflater, container, false)
 
-        val factory = MovieViewModelFactory(requireContext())
-        viewModel = ViewModelProviders.of(this, factory).get(MovieViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(PopularActorsViewModel::class.java)
 
         if (viewModel.allPopularActorsDataLiveData.value == null) {
             viewModel.getPopularActorsData(viewModel.currentPage)

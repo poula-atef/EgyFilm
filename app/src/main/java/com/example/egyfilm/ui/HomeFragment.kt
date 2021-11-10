@@ -1,38 +1,34 @@
 package com.example.egyfilm.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.FragmentNavigator
-import androidx.navigation.fragment.FragmentNavigatorExtras
-import com.example.egyfilm.R
 import com.example.egyfilm.databinding.FragmentHomeBinding
 import com.example.egyfilm.pojo.adapters.GenresAdapter
-import com.example.egyfilm.pojo.viewModelUtils.MovieViewModel
-import com.example.egyfilm.pojo.viewModelUtils.MovieViewModelFactory
 import com.example.egyfilm.pojo.adapters.MoviesAdapter
 import com.example.egyfilm.pojo.adapters.RecAdapter
 import com.example.egyfilm.pojo.classes.Genre
 import com.example.egyfilm.pojo.classes.Movie
+import com.example.egyfilm.pojo.viewModelUtils.HomeViewModel
+import com.example.egyfilm.pojo.viewModelUtils.HomeViewModelFactory
 
 
 class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
     GenresAdapter.OnGenreItemClickListener, RecAdapter.OnMovieRecyclerViewItemClickListener {
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var viewModel: MovieViewModel
+    private lateinit var viewModel: HomeViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val factory = MovieViewModelFactory(requireContext())
-        viewModel = ViewModelProviders.of(this, factory).get(MovieViewModel::class.java)
+        val factory = HomeViewModelFactory(requireContext())
+        viewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
         viewModel.fetchData()
         binding.viewModel = viewModel
         binding.lifecycleOwner = this

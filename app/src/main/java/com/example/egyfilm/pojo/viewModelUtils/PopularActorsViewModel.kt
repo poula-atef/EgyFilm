@@ -4,26 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import com.example.egyfilm.pojo.classes.Actor
 import com.example.egyfilm.pojo.classes.ActorFullData
 import com.example.egyfilm.pojo.classes.PopularActors
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class PopularActorsViewModel : ViewModel() {
+class PopularActorsViewModel : ActorDetailsViewModel() {
 
     private val _allPopularActorsDataLiveData =
         MutableLiveData<Pair<ArrayList<Actor>, ArrayList<ActorFullData>>?>()
     val allPopularActorsDataLiveData: LiveData<Pair<ArrayList<Actor>, ArrayList<ActorFullData>>?>
         get() = _allPopularActorsDataLiveData
-
-
-    private val _actorLiveData = MutableLiveData<ActorFullData>()
-    val actorLiveData: LiveData<ActorFullData>
-        get() = _actorLiveData
 
 
     private val _popularActorsLiveData = MutableLiveData<PopularActors?>()
@@ -33,16 +24,14 @@ class PopularActorsViewModel : ViewModel() {
 
     var count = 0
     var isDataSet = false
-    var popularActorsPagesCount = 0L
-    private val job = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + job)
+    private val _popularActorsPagesCount = MutableLiveData<Long?>()
+    val popularActorsPagesCount: LiveData<Long?>
+        get() = _popularActorsPagesCount
+
+    var currentPage = 1
 
 
-    fun getActorDetails(id: Long) {
-        uiScope.launch {
-            _actorLiveData.value = MovieRepository.getActorDetailsSuspend(id)
-        }
-    }
+
 
     fun getPopularActors(page: Int) {
         uiScope.launch {
@@ -51,15 +40,17 @@ class PopularActorsViewModel : ViewModel() {
     }
 
     fun getPopularActorsData(page: Int) {
-        val actorLst = ArrayList<Actor>()
-        val actorFullDataLst = ArrayList<ActorFullData>()
+        var actorLst = ArrayList<Actor>()
+        var actorFullDataLst = ArrayList<ActorFullData>()
         var actorsCount = 0
         if (!isDataSet) {
-            actorLst.clear()
-            actorFullDataLst.clear()
+            isDataSet = true
             popularActorsLiveData.observeForever(Observer {
-                popularActorsPagesCount = it?.totalPages ?: return@Observer
-                actorsCount = it.results.size
+                actorLst = ArrayList<Actor>()
+                actorFullDataLst = ArrayList<ActorFullData>()
+                actorsCount = it?.results?.size ?: return@Observer
+                if (_popularActorsPagesCount.value == null)
+                    _popularActorsPagesCount.value = it.totalPages
                 getActorDetails(it.results.get(count).id)
                 Log.d("getDataFromApi", "start with index $count")
             })
@@ -84,19 +75,11 @@ class PopularActorsViewModel : ViewModel() {
 
     }
 
-    fun doneSelectingActor() {
-        _actorLiveData.value = null
-    }
-
 
     fun donePopularActor() {
         _popularActorsLiveData.value = null
         doneSelectingActor()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        job.cancel()
-    }
 
 }

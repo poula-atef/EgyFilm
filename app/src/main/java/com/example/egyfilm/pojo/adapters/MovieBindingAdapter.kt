@@ -8,9 +8,13 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.egyfilm.R
 import com.example.egyfilm.pojo.Constants
 import com.example.egyfilm.pojo.classes.*
 import java.math.RoundingMode
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 @BindingAdapter("setMovieTitleFromTMDBForLargeItem")
@@ -188,4 +192,32 @@ fun RecyclerView.setActorsMoviesRecyclerViewItems(movies: ActorMovies?) {
         movieLst.add(Movie(movie))
     }
     (adapter as MoviesAdapter).submitList(movieLst)
+}
+
+
+@BindingAdapter("setActorBirthDate")
+fun TextView.setActorBirthDate(actor: ActorFullData) {
+    text = actor.birthday
+}
+
+@BindingAdapter("setActorDeathDate")
+fun TextView.setActorDeathDate(actor: ActorFullData) {
+    text = if (actor.deathday == null)
+        context.getString(R.string.alive)
+    else
+        actor.deathday
+}
+
+@BindingAdapter("setActorBirthPlace")
+fun TextView.setActorBirthPlace(actor: ActorFullData) {
+    text = actor.placeOfBirth
+}
+
+
+@BindingAdapter("setActorAge")
+fun TextView.setActorAge(actor: ActorFullData) {
+    text = (Calendar.getInstance()
+        .get(Calendar.YEAR) - actor.birthday.split('-')[0].toInt()).toString() + " " + context.getString(
+        R.string.years
+    )
 }

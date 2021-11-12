@@ -195,15 +195,6 @@
                         android:textColor="@color/text_color_1"
                         android:textSize="@dimen/title_size" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|end"
-                        android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/allerta_stencil"
-                        android:text="@string/see_more"
-                        android:textColor="@color/text_color_1"
-                        android:textSize="@dimen/_10sdp" />
                 </FrameLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -230,15 +221,6 @@
                         android:textColor="@color/text_color_1"
                         android:textSize="@dimen/title_size" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|end"
-                        android:layout_marginEnd="10dp"
-                        android:fontFamily="@font/allerta_stencil"
-                        android:text="@string/see_more"
-                        android:textColor="@color/text_color_1"
-                        android:textSize="@dimen/_10sdp" />
                 </FrameLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

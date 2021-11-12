@@ -57,7 +57,7 @@ data class ActorFullData(
     val adult: Boolean,
     val biography: String,
     val birthday: String,
-    val deathday: String,
+    val deathday: String?,
     val gender: Int,
     val homepage: String,
     @PrimaryKey val id: Long,

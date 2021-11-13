@@ -25,4 +25,16 @@
     <string name="place_of_birth">Birth Place:</string>
     <string name="alive">Alive</string>
     <string name="years">Years</string>
+    <string name="login">Login</string>
+    <string name="username">UserName...</string>
+    <string name="email">Email...</string>
+    <string name="password">Password...</string>
+    <string name="re_password">Re-Password...</string>
+    <string name="already_have_account">Already have account</string>
+    <string name="dont_have_account">Don\'t have an account</string>
+    <string name="signup">Signup</string>
+    <string name="login_as_a_guest">Login as a Guest</string>
+    <string name="all_fields_are_required">All Fields Are Required !!</string>
+    <string name="try_again_later">Some Error Happened, Please Try Again Later !!</string>
+    <string name="make_sure_of_password">Password Fields Must Be Same !!</string>
 </resources>

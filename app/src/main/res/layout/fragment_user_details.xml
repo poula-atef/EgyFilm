@@ -20,7 +20,7 @@
         tools:context=".ui.UserDetailsFragment">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/logout"
             setActorImageFromFullData="@{actor}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

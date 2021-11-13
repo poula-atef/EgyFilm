@@ -16,6 +16,7 @@ import com.example.egyfilm.pojo.classes.Genre
 import com.example.egyfilm.pojo.classes.Movie
 import com.example.egyfilm.pojo.viewModelUtils.HomeViewModel
 import com.example.egyfilm.pojo.viewModelUtils.HomeViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
 
 
 class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
@@ -32,6 +33,11 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
         viewModel.fetchData()
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        viewModel.genresDataCompleted.observe(viewLifecycleOwner, Observer {
+            if(it == null)
+                return@Observer
+            binding.loading.visibility = View.GONE
+        })
         binding.rec.adapter = RecAdapter(this, this)
         binding.genreRec.adapter = GenresAdapter(this)
         binding.actorFab.setOnClickListener {
@@ -44,6 +50,14 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
                 HomeFragmentDirections.actionHomeFragmentToSearchFragment()
             )
         }
+
+        binding.logout.setOnClickListener{
+            FirebaseAuth.getInstance().signOut()
+            Navigation.findNavController(binding.root).navigate(
+                HomeFragmentDirections.actionHomeFragmentToLoginFragment()
+            )
+        }
+
         return binding.root
     }
 

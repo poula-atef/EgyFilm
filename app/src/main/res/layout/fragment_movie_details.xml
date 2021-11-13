@@ -23,7 +23,7 @@
         tools:context=".ui.MovieDetailsFragment">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/logout"
             setMovieBackImageFromTMDB="@{movie}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -79,6 +79,7 @@
                 setMovieImageFromTMDB="@{movie}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 tools:src="@drawable/dune" />
         </androidx.cardview.widget.CardView>
 

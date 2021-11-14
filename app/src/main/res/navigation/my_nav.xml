@@ -47,6 +47,13 @@
             app:popExitAnim="@anim/exit_to_left"
             app:popUpTo="@id/my_nav"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_favouriteFragment"
+            app:destination="@id/favouriteFragment"
+            app:enterAnim="@anim/enter_from_left"
+            app:exitAnim="@anim/exit_to_right"
+            app:popEnterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_left" />
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
@@ -147,5 +154,17 @@
             app:popExitAnim="@anim/exit_to_left"
             app:popUpTo="@id/my_nav"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="com.example.egyfilm.ui.FavouriteFragment"
+        android:label="FavouriteFragment" >
+        <action
+            android:id="@+id/action_favouriteFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/enter_from_left"
+            app:exitAnim="@anim/exit_to_right"
+            app:popEnterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_left" />
     </fragment>
 </navigation>

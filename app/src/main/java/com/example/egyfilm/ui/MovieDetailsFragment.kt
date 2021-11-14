@@ -3,6 +3,7 @@ package com.example.egyfilm.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -21,6 +22,11 @@ import com.example.egyfilm.pojo.classes.*
 import com.example.egyfilm.pojo.viewModelUtils.ActorDetailsViewModel
 import com.example.egyfilm.pojo.viewModelUtils.MovieDetailsViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 
@@ -58,6 +64,25 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
         })
 
 
+        FirebaseDatabase
+            .getInstance().getReference("users").child(FirebaseAuth.getInstance().uid!!)
+            .child("favs").addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for(shot in snapshot.children){
+                        if(shot.key?.equals(movie.id.toString())!!){
+                            setFavouriteIcon(R.drawable.ic_heart_filled)
+                            return
+                        }
+                    }
+                    setFavouriteIcon(R.drawable.ic_heart)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+
+
         binding.floatingActionButton.setOnTouchListener { _, event ->
             if (movieTrailer == null) {
                 Handler().postDelayed(Runnable {
@@ -79,7 +104,60 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
         }
 
 
+        binding.loveImg.setOnClickListener {
+            if (FirebaseAuth.getInstance().uid == null) {
+                val msg: CharSequence = context?.getString(R.string.cant_love_movie).toString()
+                Snackbar.make(requireView(), msg, Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (binding.loveImg.contentDescription.toString() == R.drawable.ic_heart.toString()
+            ) {
+                Log.d("TAG", "content description : " + binding.loveImg.contentDescription.toString())
+                Log.d("TAG", "heart img : " + R.drawable.ic_heart.toString())
+                Log.d("TAG", "is equals : ${binding.loveImg.contentDescription.toString() != R.drawable.ic_heart.toString()}")
+                FirebaseDatabase
+                    .getInstance().getReference("users").child(FirebaseAuth.getInstance().uid!!)
+                    .child("favs").child(movie.id.toString()).setValue(movie)
+                    .addOnCompleteListener {
+
+                        val msg: CharSequence = if (it.isSuccessful) {
+                            setFavouriteIcon(R.drawable.ic_heart_filled)
+                            context?.getString(R.string.added_to_favs).toString()
+                        } else
+                            it.exception?.message.toString()
+
+                        Snackbar.make(requireView(), msg, Snackbar.LENGTH_SHORT).show()
+                    }
+            } else {
+                Log.d("TAG", "content description : " + binding.loveImg.contentDescription.toString())
+                Log.d("TAG", "heart img : " + R.drawable.ic_heart.toString())
+                Log.d("TAG", "is equals : ${binding.loveImg.contentDescription.toString() != R.drawable.ic_heart.toString()}")
+
+                FirebaseDatabase
+                    .getInstance().getReference("users").child(FirebaseAuth.getInstance().uid!!)
+                    .child("favs").child(movie.id.toString()).removeValue().addOnCompleteListener {
+
+                        val msg: CharSequence = if (it.isSuccessful) {
+                            setFavouriteIcon(R.drawable.ic_heart)
+                            context?.getString(R.string.removed_from_favs).toString()
+                        } else
+                            it.exception?.message.toString()
+
+                        Snackbar.make(requireView(), msg, Snackbar.LENGTH_SHORT).show()
+                    }
+            }
+        }
+
         return binding.root
+    }
+
+    private fun setFavouriteIcon(icon: Int) {
+        binding.loveImg.animate().alpha(0f).setDuration(300).start()
+        Handler().postDelayed(Runnable {
+            binding.loveImg.setImageResource(icon)
+            binding.loveImg.contentDescription = icon.toString()
+            binding.loveImg.animate().alpha(1f).setDuration(300).start()
+        }, 301)
     }
 
     private fun startVideoTrailer() {
@@ -127,7 +205,6 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
     }
 
     override fun onGenreItemClick(genre: Genre) {
-//        Toast.makeText(requireContext(), genre.name, Toast.LENGTH_SHORT).show()
         Navigation.findNavController(binding.root).navigate(
             MovieDetailsFragmentDirections.actionMovieDetailsFragmentToGenreFragment(
                 genre

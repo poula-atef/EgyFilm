@@ -7,7 +7,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(tableName = "genre")
-data class Genre(@PrimaryKey val id: Int, val name: String) : Parcelable
+data class Genre(@PrimaryKey val id: Int, val name: String) : Parcelable{
+    constructor() : this(
+        0,""
+    )
+}
 
 data class Genres(var genres: List<Genre>? = null)
 

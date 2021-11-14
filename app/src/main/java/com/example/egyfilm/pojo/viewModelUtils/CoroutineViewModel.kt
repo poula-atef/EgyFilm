@@ -15,7 +15,6 @@ abstract class CoroutineViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         job.cancel()
-        Log.d("CoroutineViewModel", "onCleared is called!!!!!")
     }
 
 }

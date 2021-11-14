@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "movie_full_data")
 data class MovieFullData(
     @SerializedName("backdrop_path") val backdropPath: String,
-    @SerializedName("belongs_to_collection") val belongsToCollection: BelongsToCollection,
+    @SerializedName("belongs_to_collection") val belongsToCollection: BelongsToCollection?,
     @SerializedName("imdb_id") val imdbId: String,
     @SerializedName("original_language") val originalLanguage: String,
     @SerializedName("original_title") val originalTitle: String,
@@ -35,7 +35,35 @@ data class MovieFullData(
     val title: String,
     val video: Boolean
 
-) : Parcelable
+) : Parcelable {
+    constructor() : this(
+        "",
+        null,
+        "",
+        "",
+        "",
+        "",
+        listOf<ProductionCompanies>(),
+        listOf<ProductionCountries>(),
+        "",
+        listOf<SpokenLanguages>(),
+        0.0,
+        0,
+        false,
+        0,
+        listOf<Genre>(),
+        "",
+        0,
+        "",
+        0.0,
+        0,
+        0,
+        "",
+        "",
+        "",
+        false
+    )
+}
 
 @Parcelize
 data class BelongsToCollection(
@@ -43,7 +71,11 @@ data class BelongsToCollection(
     val name: String,
     @SerializedName("poster_path") val posterPath: String,
     @SerializedName("backdrop_path") val backdropPath: String
-) : Parcelable
+) : Parcelable{
+    constructor() : this(
+        0,"","",""
+    )
+}
 
 @Parcelize
 data class ProductionCompanies(
@@ -51,17 +83,29 @@ data class ProductionCompanies(
     @SerializedName("origin_country") val originCountry: String,
     val id: Long,
     val name: String
-) : Parcelable
+) : Parcelable {
+    constructor() : this(
+        "", "", 0, ""
+    )
+}
 
 @Parcelize
 data class ProductionCountries(
     @SerializedName("iso_3166_1") val iso31661: String,
     val name: String
-) : Parcelable
+) : Parcelable {
+    constructor() : this(
+        "", ""
+    )
+}
 
 @Parcelize
 data class SpokenLanguages(
     @SerializedName("english_name") val englishName: String,
     @SerializedName("iso_639_1") val iso6391: String,
     val name: String
-) : Parcelable
+) : Parcelable {
+    constructor() : this(
+        "", "", ""
+    )
+}

@@ -21,7 +21,7 @@ data class Movie(
     @Expose(serialize = false, deserialize = false) @PrimaryKey(autoGenerate = true) val dbId: Long,
     @Expose(serialize = false, deserialize = false) var category: String,
     @SerializedName("backdrop_path") val backdropPath: String?,
-    @SerializedName("genre_ids") val genreIds: List<Int>?,
+    @SerializedName("genre_ids") var genreIds: List<Int>?,
     @SerializedName("original_language") val originalLanguage: String?,
     @SerializedName("original_title") val originalTitle: String,
     @SerializedName("poster_path") val posterPath: String?,
@@ -54,6 +54,31 @@ data class Movie(
                 movie.title,
                 movie.video
             )
+
+    constructor(movie: MovieFullData) : this(
+        -1,
+        "",
+        movie.backdropPath,
+        null,
+        movie.originalLanguage,
+        movie.originalTitle,
+        movie.posterPath,
+        movie.releaseDate,
+        movie.voteAverage,
+        movie.voteCount.toLong(),
+        movie.adult,
+        movie.id,
+        movie.overview,
+        movie.popularity,
+        movie.title,
+        movie.video
+    ){
+        val gnrs = mutableListOf<Int>()
+        movie.genres.forEach {
+            gnrs.add(it.id)
+        }
+        genreIds = gnrs
+    }
 }
 
 

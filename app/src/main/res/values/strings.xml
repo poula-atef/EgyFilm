@@ -37,4 +37,8 @@
     <string name="all_fields_are_required">All Fields Are Required !!</string>
     <string name="try_again_later">Some Error Happened, Please Try Again Later !!</string>
     <string name="make_sure_of_password">Password Fields Must Be Same !!</string>
+    <string name="cant_love_movie">You Have To Sign Up First To Mark Movie As Favourite !!</string>
+    <string name="added_to_favs">Added To Your Favourites !!</string>
+    <string name="removed_from_favs">Removed From Your Favourites !!</string>
+    <string name="signup_first">You Have To Signup First !!</string>
 </resources>

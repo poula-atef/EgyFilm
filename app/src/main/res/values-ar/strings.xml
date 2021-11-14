@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EgyFilm</string>
+    <string name="description">وصف</string>
+    <string name="actors">الممثلين</string>
+    <string name="similar">افلام مشابهة</string>
+    <string name="recommendations">مقترحات</string>
+    <string name="overview">مقدمه</string>
+    <string name="movies">افلام</string>
+    <string name="next">التالي</string>
+    <string name="previous">السابق</string>
+    <string name="search">ابحث...</string>
+    <string name="birth_date">تاريخ الميلاد:</string>
+    <string name="age">السن:</string>
+    <string name="death_date">تاريخ الوفاه:</string>
+    <string name="place_of_birth">مكان الميلاد:</string>
+    <string name="alive">علي قيد الحياه</string>
+    <string name="years">سنوات</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="username">اسم المستخدم...</string>
+    <string name="email">الايميل...</string>
+    <string name="password">الرقم السري...</string>
+    <string name="re_password">اعادة الرقم السري...</string>
+    <string name="already_have_account">لديك حساب بالفعل</string>
+    <string name="dont_have_account">ليس لديك حساب</string>
+    <string name="signup">تسجيل</string>
+    <string name="login_as_a_guest">الدخول كضيف</string>
+    <string name="all_fields_are_required">جميع البيانات مطلوبه !!</string>
+    <string name="try_again_later">هناك خطأ, من فضلك حاول مره اخري !!</string>
+    <string name="make_sure_of_password">خانتين الباسوورد غير متطابقتين !!</string>
+    <string name="cant_love_movie">عليك تسجيل الدخول اولا لتستطيع وضع مفضله لقائمتك !!</string>
+    <string name="added_to_favs">تمت الاضافه لمفضلتك !!</string>
+    <string name="removed_from_favs">تم الحذف من مفضلتك !!</string>
+    <string name="signup_first">عليك التسجيل اولا !!</string>
+</resources>

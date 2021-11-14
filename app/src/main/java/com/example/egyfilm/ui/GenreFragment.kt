@@ -1,5 +1,6 @@
 package com.example.egyfilm.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import com.example.egyfilm.R
 import com.example.egyfilm.databinding.FragmentGenreBinding
 import com.example.egyfilm.pojo.adapters.ActorAdapter
 import com.example.egyfilm.pojo.adapters.MoviesAdapter
@@ -18,6 +20,7 @@ import com.example.egyfilm.pojo.classes.Movie
 import com.example.egyfilm.pojo.viewModelUtils.GenrePageViewModel
 
 
+@SuppressLint("SetTextI18n")
 class GenreFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
 
     private lateinit var binding: FragmentGenreBinding
@@ -33,7 +36,8 @@ class GenreFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
 
         viewModel.genre = GenreFragmentArgs.fromBundle(requireArguments()).genre
 
-        binding.genreTitle.text = viewModel.genre!!.name.replace('_',' ').capitalize() + " Movies"
+        binding.genreTitle.text = viewModel.genre!!.name.replace('_', ' ')
+            .capitalize() + " " + context?.getString(R.string.movies)
 
         if (viewModel.genresLiveData.value == null)
             viewModel.getGenreMovies()

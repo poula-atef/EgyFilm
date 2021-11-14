@@ -4,20 +4,20 @@
     <string name="actors">Actors</string>
     <string name="similar">Similar Movies</string>
     <string name="recommendations">Recommendations</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="see_more"><![CDATA[See More>>]]></string>
-    <string name="img_trans">imgTrans</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="see_more" translatable="false"><![CDATA[See More>>]]></string>
+    <string name="img_trans" translatable="false">imgTrans</string>
     <string name="overview">OverView</string>
     <string name="movies">Movies</string>
-    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_test" translatable="false">TestActivity</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="first_fragment_label" translatable="false">First Fragment</string>
+    <string name="second_fragment_label" translatable="false">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="hello_first_fragment" translatable="false">Hello first fragment</string>
+    <string name="hello_second_fragment" translatable="false">Hello second fragment. Arg: %1$s</string>
     <string name="search">Search...</string>
     <string name="birth_date">Birth Date:</string>
     <string name="age">Age:</string>

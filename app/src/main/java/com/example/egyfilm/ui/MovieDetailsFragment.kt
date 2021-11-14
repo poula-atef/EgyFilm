@@ -63,25 +63,25 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
             movieTrailer = it.results[0]
         })
 
-
-        FirebaseDatabase
-            .getInstance().getReference("users").child(FirebaseAuth.getInstance().uid!!)
-            .child("favs").addListenerForSingleValueEvent(object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    for(shot in snapshot.children){
-                        if(shot.key?.equals(movie.id.toString())!!){
-                            setFavouriteIcon(R.drawable.ic_heart_filled)
-                            return
+        if (FirebaseAuth.getInstance().uid != null) {
+            FirebaseDatabase
+                .getInstance().getReference("users").child(FirebaseAuth.getInstance().uid!!)
+                .child("favs").addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (shot in snapshot.children) {
+                            if (shot.key?.equals(movie.id.toString())!!) {
+                                setFavouriteIcon(R.drawable.ic_heart_filled)
+                                return
+                            }
                         }
+                        setFavouriteIcon(R.drawable.ic_heart)
                     }
-                    setFavouriteIcon(R.drawable.ic_heart)
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            })
-
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+                })
+        }
 
         binding.floatingActionButton.setOnTouchListener { _, event ->
             if (movieTrailer == null) {
@@ -112,9 +112,15 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
             }
             if (binding.loveImg.contentDescription.toString() == R.drawable.ic_heart.toString()
             ) {
-                Log.d("TAG", "content description : " + binding.loveImg.contentDescription.toString())
+                Log.d(
+                    "TAG",
+                    "content description : " + binding.loveImg.contentDescription.toString()
+                )
                 Log.d("TAG", "heart img : " + R.drawable.ic_heart.toString())
-                Log.d("TAG", "is equals : ${binding.loveImg.contentDescription.toString() != R.drawable.ic_heart.toString()}")
+                Log.d(
+                    "TAG",
+                    "is equals : ${binding.loveImg.contentDescription.toString() != R.drawable.ic_heart.toString()}"
+                )
                 FirebaseDatabase
                     .getInstance().getReference("users").child(FirebaseAuth.getInstance().uid!!)
                     .child("favs").child(movie.id.toString()).setValue(movie)
@@ -129,9 +135,15 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
                         Snackbar.make(requireView(), msg, Snackbar.LENGTH_SHORT).show()
                     }
             } else {
-                Log.d("TAG", "content description : " + binding.loveImg.contentDescription.toString())
+                Log.d(
+                    "TAG",
+                    "content description : " + binding.loveImg.contentDescription.toString()
+                )
                 Log.d("TAG", "heart img : " + R.drawable.ic_heart.toString())
-                Log.d("TAG", "is equals : ${binding.loveImg.contentDescription.toString() != R.drawable.ic_heart.toString()}")
+                Log.d(
+                    "TAG",
+                    "is equals : ${binding.loveImg.contentDescription.toString() != R.drawable.ic_heart.toString()}"
+                )
 
                 FirebaseDatabase
                     .getInstance().getReference("users").child(FirebaseAuth.getInstance().uid!!)

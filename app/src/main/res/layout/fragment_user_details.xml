@@ -102,7 +102,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
                                     android:fontFamily="@font/allerta_stencil"
-                                    android:text="3/11/1960"
+                                    tools:text="3/11/1960"
                                     setActorBirthDate = "@{actor}"
                                     android:textColor="@color/text_color_1"
                                     android:textSize="@dimen/_16ssp" />
@@ -128,7 +128,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
                                     android:fontFamily="@font/allerta_stencil"
-                                    android:text="50 Years"
+                                    tools:text="50 Years"
                                     setActorAge="@{actor}"
                                     android:textColor="@color/text_color_1"
                                     android:textSize="@dimen/_16ssp" />
@@ -154,7 +154,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
                                     android:fontFamily="@font/allerta_stencil"
-                                    android:text="3/6/2015"
+                                    tools:text="3/6/2015"
                                     setActorDeathDate="@{actor}"
                                     android:textColor="@color/text_color_1"
                                     android:textSize="@dimen/_16ssp" />
@@ -181,7 +181,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
                                     android:fontFamily="@font/allerta_stencil"
-                                    android:text="LA"
+                                    tools:text="LA"
                                     setActorBirthPlace="@{actor}"
                                     android:textColor="@color/text_color_1"
                                     android:textSize="@dimen/_16ssp" />

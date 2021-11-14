@@ -216,8 +216,11 @@ fun TextView.setActorBirthPlace(actor: ActorFullData) {
 
 @BindingAdapter("setActorAge")
 fun TextView.setActorAge(actor: ActorFullData) {
-    text = (Calendar.getInstance()
-        .get(Calendar.YEAR) - actor.birthday.split('-')[0].toInt()).toString() + " " + context.getString(
-        R.string.years
-    )
+    if (actor.birthday != null) {
+        text = (Calendar.getInstance()
+            .get(Calendar.YEAR) - actor.birthday.split('-')[0].toInt()).toString() + " " + context.getString(
+            R.string.years
+        )
+    }
+
 }

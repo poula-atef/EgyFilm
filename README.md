@@ -20,3 +20,7 @@ have two languages arabic and english.
 - Data Binding
 - Binding Adapter
 - Navigation Components With Safe Args
+
+### Demo
+
+https://user-images.githubusercontent.com/62244215/141696316-9e78c167-559a-450b-9cb2-936f037b447e.mp4

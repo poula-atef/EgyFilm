@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,15 +61,16 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
 
         binding.logout.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
+            PreferenceManager.getDefaultSharedPreferences(requireContext()).edit().clear().apply()
             Navigation.findNavController(binding.root).navigate(
                 HomeFragmentDirections.actionHomeFragmentToLoginFragment()
             )
         }
 
         binding.userProfile.setOnClickListener {
-            if(FirebaseAuth.getInstance().uid == null){
-                val msg : CharSequence = context?.getString(R.string.signup_first).toString()
-                Snackbar.make(requireView(),msg,Snackbar.LENGTH_SHORT).show()
+            if (FirebaseAuth.getInstance().uid == null) {
+                val msg: CharSequence = context?.getString(R.string.signup_first).toString()
+                Snackbar.make(requireView(), msg, Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             showDialog()
@@ -83,6 +85,8 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_item)
+        dialog.findViewById<TextView>(R.id.username).text =
+            PreferenceManager.getDefaultSharedPreferences(requireContext()).getString("name", "?")
         dialog.findViewById<TextView>(R.id.fav_Tv).setOnClickListener {
             dialog.dismiss()
             Navigation.findNavController(binding.root)

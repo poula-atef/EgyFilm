@@ -41,4 +41,5 @@
     <string name="added_to_favs">Added To Your Favourites !!</string>
     <string name="removed_from_favs">Removed From Your Favourites !!</string>
     <string name="signup_first">You Have To Signup First !!</string>
+    <string name="favourites">Favourites</string>
 </resources>

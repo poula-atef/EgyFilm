@@ -3,6 +3,7 @@ package com.example.egyfilm.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
+import android.preference.PreferenceManager
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,7 +16,10 @@ import com.example.egyfilm.databinding.FragmentLoginBinding
 import com.example.egyfilm.pojo.classes.User
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 @SuppressLint("ClickableViewAccessibility")
 class LoginFragment : Fragment() {
@@ -43,7 +47,7 @@ class LoginFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        if(FirebaseAuth.getInstance().uid != null){
+        if (FirebaseAuth.getInstance().uid != null) {
             Navigation.findNavController(requireView()).navigate(
                 LoginFragmentDirections.actionLoginFragmentToHomeFragment()
             )
@@ -61,9 +65,22 @@ class LoginFragment : Fragment() {
                         binding.password.text.toString()
                     ).addOnCompleteListener {
                         if (it.isSuccessful) {
-                            Navigation.findNavController(binding.root).navigate(
-                                LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                            )
+                            FirebaseDatabase.getInstance().getReference("users")
+                                .child(auth.uid!!).child("name")
+                                .addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        PreferenceManager.getDefaultSharedPreferences(requireContext())
+                                            .edit()
+                                            .putString("name", snapshot.value.toString()).apply()
+                                        Navigation.findNavController(binding.root).navigate(
+                                            LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+                                        )
+                                    }
+
+                                    override fun onCancelled(error: DatabaseError) {
+                                        TODO("Not yet implemented")
+                                    }
+                                })
                         } else {
                             val message: CharSequence =
                                 it.exception?.message!!
@@ -81,7 +98,9 @@ class LoginFragment : Fragment() {
                 if (binding.email.text.isNotEmpty() && binding.password.text.isNotEmpty()
                     && binding.repassword.text.isNotEmpty() && binding.username.text.isNotEmpty()
                 ) {
-                    if (binding.password.text.toString().equals(binding.repassword.text.toString())) {
+                    if (binding.password.text.toString()
+                            .equals(binding.repassword.text.toString())
+                    ) {
                         auth.createUserWithEmailAndPassword(
                             binding.email.text.toString(),
                             binding.password.text.toString()

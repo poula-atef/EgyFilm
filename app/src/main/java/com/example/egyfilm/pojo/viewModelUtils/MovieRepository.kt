@@ -51,11 +51,11 @@ object MovieRepository {
                 if (isConnected) {
                     result = response.await()
                     if (result.genres?.isNotEmpty() == true)
-                        addGenresToDatabase(result.genres!!)
+                        removeGenresFromDatabase()
+                    addGenresToDatabase(result.genres!!)
                 } else
                     result = Genres()
                 result.genres = getGenresFromDatabase()
-                Log.d("Repo", "genres are here ${result.genres}")
 
             } catch (t: Throwable) {
             }
@@ -63,13 +63,15 @@ object MovieRepository {
         }
     }
 
+    private fun removeGenresFromDatabase() {
+        daoInstance.deleteGenres()
+    }
+
     private fun getGenresFromDatabase(): List<Genre> {
         return daoInstance.getGenres()
     }
 
     private fun addGenresToDatabase(genres: List<Genre>) {
-
-        daoInstance.deleteGenres()
         for (genre in genres) {
             daoInstance.insertGenre(genre)
         }
@@ -82,10 +84,7 @@ object MovieRepository {
 
     suspend fun getGenreMovies(genre: Genre, page: Int, genresCount: Int) {
         genresMap[genre.name] = getGenreMoviesSuspend(genre, page) ?: return
-        Log.d(
-            "Repo",
-            "count is $count and now is ${(specialGenresSize + genresCount)}"
-        )
+
         if (count == (specialGenresSize + genresCount))
             doneGettingGenresData()
 
@@ -99,24 +98,23 @@ object MovieRepository {
                 if (isConnected) {
                     result = response.await()
                     if (result.results?.isNotEmpty() == true) {
-                        clearGenreMoviesFromDatabase(genre.name)
+                        removeGenreMoviesFromDatabase(genre.name)
                         addGenreMoviesToDatabase(result, genre.name)
                     }
                 } else
                     result = Movies()
                 result.results = getGenreMoviesFromDatabase(genre.name)
                 count++
-                Log.d("Repo", "from normal $count")
 
             } catch (t: Throwable) {
-                Log.d("ViewModel", t.message!!)
+
             }
             result
         }
     }
 
-    private fun clearGenreMoviesFromDatabase(name: String) {
-        daoInstance.deleteGenresName(name)
+    private fun removeGenreMoviesFromDatabase(name: String) {
+        daoInstance.deleteGenreMovies(name)
     }
 
     private fun addGenreMoviesToDatabase(result: Movies, genre: String) {
@@ -133,17 +131,13 @@ object MovieRepository {
     private suspend fun doneGettingGenresData() {
         withContext(Dispatchers.Main) {
             _genresDataCompleted.value = genresMap
-            Log.d("Repo", "data is ready $genresMap")
         }
     }
 
     suspend fun getSpecialGenreMovies(page: Int, genresCount: Int) {
         for (genre in genresList) {
             genresMap[genre] = getSpecialGenreMoviesSuspend(genre, page) ?: return
-            Log.d(
-                "Repo",
-                "count is $count and now is ${(specialGenresSize + genresCount)}"
-            )
+
             if (count == (specialGenresSize + genresCount))
                 doneGettingGenresData()
         }
@@ -166,16 +160,15 @@ object MovieRepository {
                 if (isConnected) {
                     result = response.await()
                     if (result.results?.isNotEmpty() == true) {
-                        clearGenreMoviesFromDatabase(genre)
+                        removeGenreMoviesFromDatabase(genre)
                         addGenreMoviesToDatabase(result, genre)
                     }
                 } else
                     result = Movies()
                 result.results = getGenreMoviesFromDatabase(genre)
                 count++
-                Log.d("Repo", "from special $count")
             } catch (t: Throwable) {
-                Log.d("ViewModel", t.message!!)
+
             }
             result
         }
@@ -190,23 +183,23 @@ object MovieRepository {
         return withContext(Dispatchers.IO) {
             val response =
                 movieApi.getMovieFullDetails(id, Constants.API_KEY, Locale.getDefault().language)
-            var result: MovieFullData? = null
             try {
                 if (isConnected) {
-                    result = response.await()
+                    val res = response.await()
                     removeMovieFullDataToDatabase(id)
-                    addMovieFullDataToDatabase(result)
+                    addMovieFullDataToDatabase(res)
                 }
-                result = getMovieFullDataFromDatabase(id)
             } catch (t: Throwable) {
             }
-            result
+            getMovieFullDataFromDatabase(id)
         }
     }
 
 
     private fun getMovieFullDataFromDatabase(id: Long): MovieFullData? {
-        return daoInstance.getMovieFullData(id)
+        val returnVal = daoInstance.getMovieFullData(id)
+        Log.d("checkMovieData", "the movie is here!!!")
+        return returnVal
     }
 
     private fun removeMovieFullDataToDatabase(id: Long) {
@@ -214,7 +207,8 @@ object MovieRepository {
     }
 
     private fun addMovieFullDataToDatabase(movie: MovieFullData) {
-        daoInstance.insertMovieFullData(movie)
+        val ret = daoInstance.insertMovieFullData(movie)
+        Log.d("checkMovieData", "room movie id is $ret")
     }
 
     //endregion
@@ -238,7 +232,6 @@ object MovieRepository {
             var result: MovieRelative? = null
             try {
                 result = response.await()
-                Log.d("TAG", "$relationship + ${result.results}")
             } catch (t: Throwable) {
             }
             result
@@ -329,7 +322,6 @@ object MovieRepository {
                     addActorMoviesToDatabase(result)
                 }
                 result = getActorMoviesFromDatabase(id)
-                Log.d("TAG", result.toString())
             } catch (t: Throwable) {
             }
             result

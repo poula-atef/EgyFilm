@@ -23,6 +23,7 @@ import com.example.egyfilm.pojo.classes.Genre
 import com.example.egyfilm.pojo.classes.Movie
 import com.example.egyfilm.pojo.viewModelUtils.HomeViewModel
 import com.example.egyfilm.pojo.viewModelUtils.HomeViewModelFactory
+import com.example.egyfilm.pojo.viewModelUtils.MovieRepository
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
@@ -49,11 +50,28 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
         binding.rec.adapter = RecAdapter(this, this)
         binding.genreRec.adapter = GenresAdapter(this)
         binding.actorFab.setOnClickListener {
+            if(!MovieRepository.isConnected) {
+                Snackbar.make(
+                    requireView(),
+                    requireContext().getString(R.string.connect_first),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
             Navigation.findNavController(it).navigate(
                 HomeFragmentDirections.actionHomeFragmentToPopularActorsFragment()
             )
         }
         binding.searchFab.setOnClickListener {
+            if(!MovieRepository.isConnected) {
+                Snackbar.make(
+                    requireView(),
+                    requireContext().getString(R.string.connect_first),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
             Navigation.findNavController(it).navigate(
                 HomeFragmentDirections.actionHomeFragmentToSearchFragment()
             )
@@ -98,18 +116,32 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
     override fun onMovieItemClick(movie: Movie) {
         viewModel.getMovieFullDetail(movie.id!!)
         viewModel.selectedMovieLiveData.observe(this.viewLifecycleOwner, Observer {
-            Navigation.findNavController(binding.root)
-                .navigate(
-                    HomeFragmentDirections.actionHomeFragmentToMovieDetailsFragment(
-                        it ?: return@Observer
+            if (it == null)
+                Snackbar.make(
+                    requireView(),
+                    requireContext().getString(R.string.not_saved_movie),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            if (it?.id == movie.id) {
+                Navigation.findNavController(binding.root)
+                    .navigate(
+                        HomeFragmentDirections.actionHomeFragmentToMovieDetailsFragment(
+                            it
+                        )
                     )
-                )
-            viewModel.doneSelectingMovie()
+            }
         })
     }
 
     override fun onGenreItemClick(genre: Genre) {
-        //Toast.makeText(requireContext(), genre.name, Toast.LENGTH_SHORT).show()
+        if (!MovieRepository.isConnected) {
+            Snackbar.make(
+                requireView(),
+                requireContext().getString(R.string.connect_first),
+                Snackbar.LENGTH_SHORT
+            ).show()
+            return
+        }
         Navigation.findNavController(binding.root).navigate(
             HomeFragmentDirections.actionHomeFragmentToGenreFragment(
                 genre
@@ -118,7 +150,14 @@ class HomeFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
     }
 
     override fun onClick(name: String) {
-//        Toast.makeText(requireContext(), name + " see more !!", Toast.LENGTH_SHORT).show()
+        if (!MovieRepository.isConnected) {
+            Snackbar.make(
+                requireView(),
+                requireContext().getString(R.string.connect_first),
+                Snackbar.LENGTH_SHORT
+            ).show()
+            return
+        }
         var gen: Genre? = null
         for (genre in viewModel.genresLiveData.value?.genres!!) {
             if (genre.name.equals(name))

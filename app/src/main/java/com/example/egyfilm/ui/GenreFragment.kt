@@ -7,17 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.example.egyfilm.R
 import com.example.egyfilm.databinding.FragmentGenreBinding
-import com.example.egyfilm.pojo.adapters.ActorAdapter
 import com.example.egyfilm.pojo.adapters.MoviesAdapter
 import com.example.egyfilm.pojo.classes.Movie
 import com.example.egyfilm.pojo.viewModelUtils.GenrePageViewModel
+import com.google.android.material.snackbar.Snackbar
 
 
 @SuppressLint("SetTextI18n")
@@ -127,13 +126,20 @@ class GenreFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
     override fun onMovieItemClick(movie: Movie) {
         viewModel.getMovieFullDetail(movie.id!!)
         viewModel.selectedMovieLiveData.observe(this.viewLifecycleOwner, Observer {
-            Navigation.findNavController(binding.root)
-                .navigate(
-                    GenreFragmentDirections.actionGenreFragmentToMovieDetailsFragment(
-                        it ?: return@Observer
+            if (it == null)
+                Snackbar.make(
+                    requireView(),
+                    requireContext().getString(R.string.not_saved_movie),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            if (it?.id == movie.id) {
+                Navigation.findNavController(binding.root)
+                    .navigate(
+                        GenreFragmentDirections.actionGenreFragmentToMovieDetailsFragment(
+                            it ?: return@Observer
+                        )
                     )
-                )
-            viewModel.doneSelectingMovie()
+            }
         })
     }
 

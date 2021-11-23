@@ -21,6 +21,7 @@ import com.example.egyfilm.pojo.adapters.MoviesAdapter
 import com.example.egyfilm.pojo.classes.*
 import com.example.egyfilm.pojo.viewModelUtils.ActorDetailsViewModel
 import com.example.egyfilm.pojo.viewModelUtils.MovieDetailsViewModel
+import com.example.egyfilm.pojo.viewModelUtils.MovieRepository
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -60,6 +61,8 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
         movieDetailsViewModel.getMovieTrailer(movie.id)
 
         movieDetailsViewModel.movieTrailerLiveData.observe(this.viewLifecycleOwner, Observer {
+            if (it == null)
+                return@Observer
             movieTrailer = it.results[0]
         })
 
@@ -105,6 +108,14 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
 
 
         binding.loveImg.setOnClickListener {
+            if (!MovieRepository.isConnected) {
+                Snackbar.make(
+                    requireView(),
+                    requireContext().getString(R.string.connect_first),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
             if (FirebaseAuth.getInstance().uid == null) {
                 val msg: CharSequence = context?.getString(R.string.cant_love_movie).toString()
                 Snackbar.make(requireView(), msg, Snackbar.LENGTH_SHORT).show()
@@ -188,13 +199,20 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
     override fun onMovieItemClick(movie: Movie) {
         movieDetailsViewModel.getMovieFullDetail(movie.id!!)
         movieDetailsViewModel.selectedMovieLiveData.observe(this.viewLifecycleOwner, Observer {
-            Navigation.findNavController(binding.root)
-                .navigate(
-                    MovieDetailsFragmentDirections.actionMovieDetailsFragmentSelf(
-                        it ?: return@Observer
+            if (it == null)
+                Snackbar.make(
+                    requireView(),
+                    requireContext().getString(R.string.not_saved_movie),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            if (it?.id == movie.id) {
+                Navigation.findNavController(binding.root)
+                    .navigate(
+                        MovieDetailsFragmentDirections.actionMovieDetailsFragmentSelf(
+                            it ?: return@Observer
+                        )
                     )
-                )
-            movieDetailsViewModel.doneSelectingMovie()
+            }
         })
     }
 
@@ -206,17 +224,35 @@ class MovieDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener,
     override fun onActorItemClick(actor: Actor) {
         actorDetailsViewModel.getActorDetails(actor.id)
         actorDetailsViewModel.actorLiveData.observe(this.viewLifecycleOwner, Observer {
-            Navigation.findNavController(binding.root)
-                .navigate(
-                    MovieDetailsFragmentDirections.actionMovieDetailsFragmentToUserDetailsFragment(
-                        it ?: return@Observer
+            if(it == null) {
+                Snackbar.make(
+                    requireView(),
+                    requireContext().getString(R.string.not_saved_actor),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                return@Observer
+            }
+
+            if (it.id == actor.id) {
+                Navigation.findNavController(binding.root)
+                    .navigate(
+                        MovieDetailsFragmentDirections.actionMovieDetailsFragmentToUserDetailsFragment(
+                            it
+                        )
                     )
-                )
-            actorDetailsViewModel.doneSelectingActor()
+            }
         })
     }
 
     override fun onGenreItemClick(genre: Genre) {
+        if (!MovieRepository.isConnected) {
+            Snackbar.make(
+                requireView(),
+                requireContext().getString(R.string.connect_first),
+                Snackbar.LENGTH_SHORT
+            ).show()
+            return
+        }
         Navigation.findNavController(binding.root).navigate(
             MovieDetailsFragmentDirections.actionMovieDetailsFragmentToGenreFragment(
                 genre

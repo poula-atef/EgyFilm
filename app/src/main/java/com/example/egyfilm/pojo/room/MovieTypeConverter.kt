@@ -46,92 +46,92 @@ class MovieTypeConverter {
     }
 
     @TypeConverter
-    fun convertProductionCompaniesListToString(productionCompanies: List<ProductionCompanies>): String {
+    fun convertProductionCompaniesListToString(productionCompanies: List<ProductionCompanies>?): String {
         return ""
     }
 
     @TypeConverter
-    fun convertProductionCountriesListToString(productionCompanies: List<ProductionCountries>): String {
+    fun convertProductionCountriesListToString(productionCompanies: List<ProductionCountries>?): String {
         return ""
     }
 
     @TypeConverter
-    fun convertSpokenLanguagesListToString(spokenLanguages: List<SpokenLanguages>): String {
+    fun convertSpokenLanguagesListToString(spokenLanguages: List<SpokenLanguages>?): String {
         return ""
     }
 
     @TypeConverter
-    fun convertStringToProductCompaniesList(str: String): List<ProductionCompanies> {
+    fun convertStringToProductCompaniesList(str: String): List<ProductionCompanies>? {
         return listOf<ProductionCompanies>()
     }
 
     @TypeConverter
-    fun convertStringToProductionCountriesList(str: String): List<ProductionCountries> {
+    fun convertStringToProductionCountriesList(str: String): List<ProductionCountries>? {
         return listOf<ProductionCountries>()
     }
 
     @TypeConverter
-    fun convertStringToSpokennLanguagesList(str: String): List<SpokenLanguages> {
+    fun convertStringToSpokennLanguagesList(str: String): List<SpokenLanguages>? {
         return listOf<SpokenLanguages>()
     }
 
     @TypeConverter
-    fun convertBelongsToCollectionToString(btc: BelongsToCollection): String {
+    fun convertBelongsToCollectionToString(btc: BelongsToCollection?): String {
         return Gson().toJson(btc)
     }
 
     @TypeConverter
-    fun convertStringToBelongToCollection(str: String): BelongsToCollection {
+    fun convertStringToBelongToCollection(str: String): BelongsToCollection? {
         return Gson().fromJson(str, BelongsToCollection::class.java)
     }
 
     @TypeConverter
-    fun convertGenreListToString(lst: List<Genre>): String {
+    fun convertGenreListToString(lst: List<Genre>?): String {
         return Gson().toJson(lst)
     }
 
     @TypeConverter
-    fun convertStringToGenreList(str: String): List<Genre> {
+    fun convertStringToGenreList(str: String): List<Genre>? {
         return Gson().fromJson(str, object : TypeToken<ArrayList<Genre?>?>() {}.type)
     }
 
     @TypeConverter
-    fun convertActorListToString(lst: List<Actor>): String {
+    fun convertActorListToString(lst: List<Actor>?): String {
         return Gson().toJson(lst)
     }
 
     @TypeConverter
-    fun convertStringToActorList(str: String): List<Actor> {
+    fun convertStringToActorList(str: String): List<Actor>? {
         return Gson().fromJson(str, object : TypeToken<ArrayList<Actor?>?>() {}.type)
     }
 
     @TypeConverter
-    fun convertStringToCrewList(str: String): List<Crew> {
+    fun convertStringToCrewList(str: String): List<Crew>? {
         return Gson().fromJson(str, object : TypeToken<ArrayList<Crew?>?>() {}.type)
     }
 
     @TypeConverter
-    fun convertCrewListToString(lst: List<Crew>): String {
+    fun convertCrewListToString(lst: List<Crew>?): String {
         return Gson().toJson(lst)
     }
 
     @TypeConverter
-    fun convertStringToActorMovieList(str: String): List<ActorMovie> {
+    fun convertStringToActorMovieList(str: String): List<ActorMovie>? {
         return Gson().fromJson(str, object : TypeToken<ArrayList<ActorMovie?>?>() {}.type)
     }
 
     @TypeConverter
-    fun convertActorMovieListToString(lst : List<ActorMovie>) : String{
+    fun convertActorMovieListToString(lst : List<ActorMovie>?) : String{
         return Gson().toJson(lst)
     }
 
     @TypeConverter
-    fun convertStringToActorMovieCrewList(str: String): List<ActorMovieCrew> {
+    fun convertStringToActorMovieCrewList(str: String): List<ActorMovieCrew>? {
         return Gson().fromJson(str, object : TypeToken<ArrayList<ActorMovieCrew?>?>() {}.type)
     }
 
     @TypeConverter
-    fun convertActorMovieCrewListToString(lst : List<ActorMovieCrew>) : String{
+    fun convertActorMovieCrewListToString(lst : List<ActorMovieCrew>?) : String{
         return Gson().toJson(lst)
     }
 

@@ -17,6 +17,7 @@ import com.example.egyfilm.databinding.FragmentSearchBinding
 import com.example.egyfilm.pojo.adapters.MoviesAdapter
 import com.example.egyfilm.pojo.classes.Movie
 import com.example.egyfilm.pojo.viewModelUtils.SearchViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class SearchFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
 
@@ -150,13 +151,21 @@ class SearchFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
     override fun onMovieItemClick(movie: Movie) {
         viewModel.getMovieFullDetail(movie.id!!)
         viewModel.selectedMovieLiveData.observe(this.viewLifecycleOwner, Observer {
-            Navigation.findNavController(binding.root)
-                .navigate(
-                    SearchFragmentDirections.actionSearchFragmentToMovieDetailsFragment(
-                        it ?: return@Observer
+            if (it == null)
+                Snackbar.make(
+                    requireView(),
+                    requireContext().getString(com.example.egyfilm.R.string.not_saved_movie),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+
+            if (it?.id == movie.id) {
+                Navigation.findNavController(binding.root)
+                    .navigate(
+                        SearchFragmentDirections.actionSearchFragmentToMovieDetailsFragment(
+                            it ?: return@Observer
+                        )
                     )
-                )
-            viewModel.doneSelectingMovie()
+            }
         })
     }
 

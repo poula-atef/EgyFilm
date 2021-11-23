@@ -74,7 +74,7 @@ data class Movie(
         movie.video
     ){
         val gnrs = mutableListOf<Int>()
-        movie.genres.forEach {
+        movie.genres?.forEach {
             gnrs.add(it.id)
         }
         genreIds = gnrs

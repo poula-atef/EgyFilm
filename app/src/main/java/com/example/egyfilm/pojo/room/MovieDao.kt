@@ -2,6 +2,7 @@ package com.example.egyfilm.pojo.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.room.OnConflictStrategy.REPLACE
 import com.example.egyfilm.pojo.classes.*
 import kotlinx.coroutines.Deferred
 
@@ -47,8 +48,8 @@ interface MovieDao {
     @Insert
     fun insertGenreMovie(movie: Movie)
 
-    @Insert
-    fun insertMovieFullData(movie: MovieFullData)
+    @Insert(onConflict = REPLACE)
+    fun insertMovieFullData(movie: MovieFullData) : Long
 
     @Insert
     fun insertMovieActors(movie: MovieActors)
@@ -70,7 +71,7 @@ interface MovieDao {
     fun deleteGenres()
 
     @Query("delete from movie where category =:genreName")
-    fun deleteGenresName(genreName: String)
+    fun deleteGenreMovies(genreName: String)
 
     @Query("delete from movie_full_data where id =:id")
     fun deleteMovieFullData(id: Long)

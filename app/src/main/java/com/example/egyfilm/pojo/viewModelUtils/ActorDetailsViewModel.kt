@@ -22,4 +22,9 @@ open class ActorDetailsViewModel : CoroutineViewModel() {
         _actorLiveData.value = null
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        doneSelectingActor()
+    }
+
 }

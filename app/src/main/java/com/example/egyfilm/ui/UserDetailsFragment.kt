@@ -8,10 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import com.example.egyfilm.R
 import com.example.egyfilm.databinding.FragmentUserDetailsBinding
 import com.example.egyfilm.pojo.adapters.MoviesAdapter
 import com.example.egyfilm.pojo.classes.Movie
 import com.example.egyfilm.pojo.viewModelUtils.UserDetailsViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class UserDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
 
@@ -36,14 +38,21 @@ class UserDetailsFragment : Fragment(), MoviesAdapter.OnMovieItemClickListener {
     override fun onMovieItemClick(movie: Movie) {
         viewModel.getMovieFullDetail(movie.id!!)
         viewModel.selectedMovieLiveData.observe(this.viewLifecycleOwner, Observer {
-            Navigation.findNavController(binding.root)
-                .navigate(
-                    UserDetailsFragmentDirections.actionUserDetailsFragmentToMovieDetailsFragment(
-                        it ?: return@Observer
+            if (it == null)
+                Snackbar.make(
+                    requireView(), requireContext().getString(R.string.not_saved_movie),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            if (it?.id == movie.id) {
+                Navigation.findNavController(binding.root)
+                    .navigate(
+                        UserDetailsFragmentDirections.actionUserDetailsFragmentToMovieDetailsFragment(
+                            it ?: return@Observer
+                        )
                     )
-                )
-            viewModel.doneSelectingMovie()
+            }
         })
     }
+
 
 }

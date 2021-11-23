@@ -32,4 +32,8 @@
     <string name="added_to_favs">تمت الاضافه لمفضلتك !!</string>
     <string name="removed_from_favs">تم الحذف من مفضلتك !!</string>
     <string name="signup_first">عليك التسجيل اولا !!</string>
+    <string name="favourites">المفضله</string>
+    <string name="not_saved_movie">هذا الفيلم غير مسجل !!!</string>
+    <string name="connect_first">الانترنت مطلوب لهذه العمليه !!</string>
+    <string name="not_saved_actor">هذا الممثل غير مسجل !!</string>
 </resources>

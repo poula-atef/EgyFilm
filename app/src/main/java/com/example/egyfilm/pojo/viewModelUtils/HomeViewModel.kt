@@ -28,7 +28,6 @@ class HomeViewModel(private val context: Context) : MovieDetailsClass() {
             return
         MovieRepository.isConnected = isConnectedToInternet(context)
         getAllFrontMovies()
-        Log.d("TAG", "fetchData !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!111")
     }
 
     fun isConnectedToInternet(context: Context): Boolean {

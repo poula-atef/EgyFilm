@@ -42,4 +42,7 @@
     <string name="removed_from_favs">Removed From Your Favourites !!</string>
     <string name="signup_first">You Have To Signup First !!</string>
     <string name="favourites">Favourites</string>
+    <string name="not_saved_movie">This Movie Is Not Saved !!!</string>
+    <string name="connect_first">Internet Needed For this Operation !!</string>
+    <string name="not_saved_actor">This Actor Is Not Saved !!</string>
 </resources>

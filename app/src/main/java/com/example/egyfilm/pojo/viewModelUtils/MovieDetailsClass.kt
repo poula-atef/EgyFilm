@@ -26,6 +26,11 @@ abstract class MovieDetailsClass : CoroutineViewModel() {
         _selectedMovieLiveData.value = null
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        doneSelectingMovie()
+    }
+
 }
 
 
